@@ -7,11 +7,43 @@
 }
 
 [data-theme='light'] .heroSection {
-  background: url('/hero-bg-light.jpeg') right top / cover no-repeat;
+  background: url('/hero-bg-light.jpeg') left top / cover no-repeat;
 }
 
 [data-theme='dark'] .heroSection {
-  background: url('/hero-bg-dark.jpg') right top / cover no-repeat;
+  background: url('/hero-bg-dark.jpg') left top / cover no-repeat;
+}
+
+[data-theme='light'] .heroSection::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 80% 100% at 40% 50%,
+      rgba(245, 242, 233, 0.92) 0%,
+      rgba(245, 242, 233, 0.75) 40%,
+      rgba(245, 242, 233, 0.2) 70%,
+      transparent 100%
+    );
+  z-index: 0;
+  pointer-events: none;
+}
+
+[data-theme='dark'] .heroSection::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 80% 100% at 40% 50%,
+      rgba(3, 18, 35, 0.88) 0%,
+      rgba(3, 18, 35, 0.65) 40%,
+      rgba(3, 18, 35, 0.2) 70%,
+      transparent 100%
+    );
+  z-index: 0;
+  pointer-events: none;
 }
 
 .heroInner {
@@ -100,8 +132,6 @@
   gap: var(--spacing-md);
 }
 
-.cardWrap {
-}
 
 .empty {
   padding: var(--spacing-xl);

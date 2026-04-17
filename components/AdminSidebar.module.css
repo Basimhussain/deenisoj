@@ -10,16 +10,12 @@
     border-color var(--dur-med) ease,
     box-shadow var(--dur-med) ease,
     background-color var(--dur-med) ease;
-  margin-left: -200px;
-  margin-top: 170px;
   position: sticky;
   top: calc(var(--nav-height) + var(--spacing-md));
 }
 
 @media (max-width: 900px) {
   .card {
-    margin-left: 0;
-    margin-top: 0;
     position: static;
   }
 }

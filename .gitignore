@@ -7,7 +7,7 @@ out
 .DS_Store
 *.log
 
-# Claude / AI tooling
+
 .claude/
 graphify-out/
 .graphify_python
