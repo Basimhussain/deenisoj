@@ -95,6 +95,16 @@ export default function SiteHeader({ email, isAdmin }: Props) {
           >
             Feed
           </Link>
+          <Link
+            href="/search"
+            className={`${styles.navLink} ${styles.searchBtn} ${isActive('/search') ? styles.navLinkActive : ''}`}
+            aria-label="Search fatawa"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" />
+            </svg>
+          </Link>
           <ThemeToggle />
           <UserMenu email={email} isAdmin={isAdmin} />
         </nav>

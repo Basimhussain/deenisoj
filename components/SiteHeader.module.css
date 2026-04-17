@@ -203,6 +203,21 @@
   transform: scaleX(1);
 }
 
+.searchBtn {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .searchForm {
+    display: none;
+  }
+  .searchBtn {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 4px;
+  }
+}
+
 @media (min-width: 768px) {
   .inner {
     padding: 0 var(--spacing-lg);
