@@ -1,0 +1,20 @@
+node_modules
+.next
+out
+.env
+.env.local
+.env.*.local
+.DS_Store
+*.log
+
+# Claude / AI tooling
+.claude/
+graphify-out/
+.graphify_python
+.code-review-graph/
+CLAUDE.md
+AGENTS.md
+GEMINI.md
+.mcp.json
+.cursorrules
+.windsurfrules

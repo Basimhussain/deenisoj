@@ -1,0 +1,113 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform var(--dur-med) var(--ease-out-expo),
+    border-color var(--dur-med) ease,
+    box-shadow var(--dur-med) ease,
+    background-color var(--dur-med) ease;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    600px circle at var(--mx, 50%) var(--my, 0%),
+    var(--color-accent-soft),
+    transparent 40%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-med) ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-lg);
+}
+
+.card:hover::after {
+  opacity: 1;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-xs);
+  position: relative;
+  z-index: 1;
+}
+
+.badge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 5px 11px;
+  border-radius: var(--radius-full);
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.category {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.questionText {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  flex: 1;
+  color: var(--color-text);
+  position: relative;
+  z-index: 1;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--color-border);
+  position: relative;
+  z-index: 1;
+}
+
+.date {
+  font-size: 11px;
+  color: var(--color-text-subtle);
+  letter-spacing: 0.04em;
+}
+
+.viewButton {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: transform var(--dur-fast) var(--ease-out-expo);
+}
+
+.viewButton:hover {
+  transform: translateX(4px);
+}

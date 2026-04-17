@@ -1,0 +1,56 @@
+.toggle {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    border-color var(--dur-fast) ease,
+    transform var(--dur-fast) ease,
+    background-color var(--dur-med) ease,
+    color var(--dur-med) ease;
+}
+
+.toggle:hover {
+  border-color: var(--color-border-strong);
+  transform: translateY(-1px) rotate(-6deg);
+}
+
+.toggle:active {
+  transform: translateY(0) rotate(0);
+}
+
+.iconWrap {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+}
+
+.icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  line-height: 1;
+  transition:
+    opacity var(--dur-med) ease,
+    transform var(--dur-med) var(--ease-out-expo);
+}
+
+.visible {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+.hidden {
+  opacity: 0;
+  transform: scale(0.6) rotate(-90deg);
+}
