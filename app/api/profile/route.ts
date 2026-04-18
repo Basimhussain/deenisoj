@@ -28,16 +28,16 @@ export async function PATCH(request: Request) {
   if ('display_name' in body) update.display_name = body.display_name ?? null;
   if ('phone' in body) update.phone = body.phone ?? null;
 
-  // Try UPDATE first; if no row exists yet, INSERT it
-  const { error: updateError, count } = await supabase
+  // Try UPDATE; if no row exists yet, INSERT it
+  const { data: updated, error: updateError } = await supabase
     .from('profiles')
     .update(update)
     .eq('id', user.id)
-    .select('id', { count: 'exact', head: true });
+    .select('id');
 
   if (updateError) return NextResponse.json({ error: updateError.message }, { status: 500 });
 
-  if (count === 0) {
+  if (!updated || updated.length === 0) {
     const { error: insertError } = await supabase
       .from('profiles')
       .insert({ id: user.id, ...update });
