@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import SiteHeader from '@/components/SiteHeader';
 import PageTransition from '@/components/PageTransition';
+import ToastShell from '@/components/Toast/ToastShell';
 import { createClient } from '@/lib/supabase-server';
 import './globals.css';
 
@@ -19,19 +20,18 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const supabase = createClient();
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  const user = session?.user ?? null;
+  const { data: { user } } = await supabase.auth.getUser();
 
   let isAdmin = false;
+  let displayName: string | null = null;
   if (user) {
     const { data: profile } = await supabase
       .from('profiles')
-      .select('role')
+      .select('role, display_name')
       .eq('id', user.id)
       .maybeSingle();
     isAdmin = profile?.role === 'admin';
+    displayName = profile?.display_name ?? null;
   }
 
   return (
@@ -50,10 +50,12 @@ export default async function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body>
-        <Suspense fallback={null}>
-          <SiteHeader email={user?.email ?? null} isAdmin={isAdmin} />
-        </Suspense>
-        <PageTransition>{children}</PageTransition>
+        <ToastShell>
+          <Suspense fallback={null}>
+            <SiteHeader email={user?.email ?? null} isAdmin={isAdmin} displayName={displayName} />
+          </Suspense>
+          <PageTransition>{children}</PageTransition>
+        </ToastShell>
       </body>
     </html>
   );

@@ -7,9 +7,10 @@ import styles from './UserMenu.module.css';
 interface Props {
   email: string | null;
   isAdmin: boolean;
+  displayName: string | null;
 }
 
-export default function UserMenu({ email, isAdmin }: Props) {
+export default function UserMenu({ email, isAdmin, displayName }: Props) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -35,13 +36,14 @@ export default function UserMenu({ email, isAdmin }: Props) {
     <div className={styles.wrap} ref={ref}>
       <button
         type="button"
-        className={styles.avatar}
+        className={styles.trigger}
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="menu"
         aria-expanded={open}
         aria-label="Account menu"
       >
-        {initial}
+        <span className={styles.avatar}>{initial}</span>
+        {displayName && <span className={styles.displayName}>{displayName}</span>}
       </button>
       {open && (
         <div className={styles.menu} role="menu">

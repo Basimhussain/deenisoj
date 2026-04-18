@@ -8,6 +8,7 @@ import styles from './QuestionCard.module.css';
 
 export interface QuestionCardProps {
   id: string;
+  fatwaNumber?: number | null;
   question: string;
   status: QuestionStatus;
   category?: string | null;
@@ -34,6 +35,7 @@ function formatDate(iso: string): string {
 
 export default function QuestionCard({
   id,
+  fatwaNumber,
   question,
   status,
   category,
@@ -52,6 +54,9 @@ export default function QuestionCard({
           {STATUS_LABELS[status]}
         </span>
         {category && <span className={styles.category}>{category}</span>}
+        {fatwaNumber != null && (
+          <span className={styles.fatwaNumber}>#{fatwaNumber}</span>
+        )}
       </header>
 
       <p className={styles.questionText}>{truncate(question, MAX_PREVIEW)}</p>

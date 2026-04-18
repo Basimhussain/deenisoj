@@ -8,6 +8,7 @@ import styles from './search.module.css';
 
 interface Result {
   id: string;
+  fatwa_number: number | null;
   question_en: string;
   category: string | null;
   status: QuestionStatus | null;
@@ -31,8 +32,9 @@ export default function SearchPage() {
 
   useEffect(() => {
     const query = q.trim();
+    const isNumberLookup = /^#?\d+$/.test(query);
 
-    if (query.length < 2) {
+    if (query.length < 2 && !isNumberLookup) {
       setResults([]);
       setHasSearched(false);
       setLoading(false);
@@ -101,8 +103,8 @@ export default function SearchPage() {
         </div>
       )}
 
-      {q.trim().length < 2 && !loading && (
-        <div className={styles.hint}>Type at least 2 characters to begin.</div>
+      {q.trim().length < 2 && !/^#?\d+$/.test(q.trim()) && !loading && (
+        <div className={styles.hint}>Type at least 2 characters, or a fatwa number like #1.</div>
       )}
 
       {results.length > 0 && (
@@ -115,6 +117,7 @@ export default function SearchPage() {
             >
               <QuestionCard
                 id={r.id}
+                fatwaNumber={r.fatwa_number}
                 question={r.question_en}
                 status={(r.status as QuestionStatus) ?? 'answered'}
                 category={r.category}

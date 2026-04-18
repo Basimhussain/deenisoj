@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import ConfirmModal from '@/components/ConfirmModal';
+import { useToast } from '@/components/Toast';
 import styles from './categories.module.css';
 
 interface Category {
@@ -14,10 +15,9 @@ interface Category {
 }
 
 export default function AdminCategoriesPage() {
+  const { toast } = useToast();
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [message, setMessage] = useState<string | null>(null);
 
   // Form state
   const [name, setName] = useState('');
@@ -44,7 +44,7 @@ export default function AdminCategoriesPage() {
       const body = await res.json();
       setCategories(body.data ?? []);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load categories');
+      toast(err instanceof Error ? err.message : 'Failed to load categories', 'error');
     } finally {
       setLoading(false);
     }
@@ -54,16 +54,10 @@ export default function AdminCategoriesPage() {
     fetchCategories();
   }, []);
 
-  const flash = (msg: string) => {
-    setMessage(msg);
-    setTimeout(() => setMessage(null), 3000);
-  };
-
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
     setSaving(true);
-    setError(null);
     try {
       const res = await fetch('/api/admin/categories', {
         method: 'POST',
@@ -81,10 +75,10 @@ export default function AdminCategoriesPage() {
       setName('');
       setDescription('');
       setSortOrder(0);
-      flash('Category added.');
+      toast('Category added.', 'success');
       await fetchCategories();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed');
+      toast(err instanceof Error ? err.message : 'Failed to add category', 'error');
     } finally {
       setSaving(false);
     }
@@ -102,7 +96,6 @@ export default function AdminCategoriesPage() {
   };
 
   const handleUpdate = async (id: string) => {
-    setError(null);
     try {
       const res = await fetch(`/api/admin/categories/${id}`, {
         method: 'PATCH',
@@ -118,10 +111,10 @@ export default function AdminCategoriesPage() {
         throw new Error(b.error || 'Failed to update');
       }
       setEditingId(null);
-      flash('Category updated.');
+      toast('Category updated.', 'success');
       await fetchCategories();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed');
+      toast(err instanceof Error ? err.message : 'Failed to update category', 'error');
     }
   };
 
@@ -129,7 +122,6 @@ export default function AdminCategoriesPage() {
     setConfirmMessage(`Delete category "${catName}"? This cannot be undone.`);
     setConfirmAction(() => async () => {
       setConfirmLoading(true);
-      setError(null);
       try {
         const res = await fetch(`/api/admin/categories/${id}`, {
           method: 'DELETE',
@@ -139,10 +131,10 @@ export default function AdminCategoriesPage() {
           throw new Error(b.error || 'Failed to delete');
         }
         setConfirmOpen(false);
-        flash('Category deleted.');
+        toast('Category deleted.', 'info');
         await fetchCategories();
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed');
+        toast(err instanceof Error ? err.message : 'Failed to delete category', 'error');
         setConfirmOpen(false);
       } finally {
         setConfirmLoading(false);
@@ -163,17 +155,6 @@ export default function AdminCategoriesPage() {
           options when publishing.
         </p>
       </header>
-
-      {message && (
-        <div className={styles.success} role="status">
-          {message}
-        </div>
-      )}
-      {error && (
-        <div className={styles.error} role="alert">
-          {error}
-        </div>
-      )}
 
       <section className={styles.card}>
         <h2 className={styles.cardHeading}>Add category</h2>

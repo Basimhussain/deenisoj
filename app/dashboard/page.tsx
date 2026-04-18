@@ -1,7 +1,6 @@
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase-server';
-import { getCurrentProfile } from '@/lib/auth';
 import { STATUS_COLORS, STATUS_LABELS, type QuestionStatus } from '@/lib/schemas';
 import styles from './dashboard.module.css';
 
@@ -17,13 +16,8 @@ interface QuestionRow {
 
 export default async function DashboardPage() {
   const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
+  const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect('/signin?next=/dashboard');
-
-  const profile = await getCurrentProfile();
 
   const { data: questions, error } = await supabase
     .from('questions')
@@ -42,17 +36,7 @@ export default async function DashboardPage() {
         <h1 className={styles.heading}>
           Your <em>questions</em>
         </h1>
-        <p className={styles.sub}>
-          Signed in as <strong>{user.email}</strong>
-          {profile?.role === 'admin' && (
-            <>
-              {' · '}
-              <Link href="/admin" className={styles.adminLink}>
-                Admin panel →
-              </Link>
-            </>
-          )}
-        </p>
+        <p className={styles.sub}>Questions you have submitted and their current status.</p>
       </header>
 
       {rows.length === 0 ? (
@@ -88,12 +72,6 @@ export default async function DashboardPage() {
           ))}
         </ul>
       )}
-
-      <form action="/auth/signout" method="post" className={styles.signoutForm}>
-        <button type="submit" className={styles.signout}>
-          Sign out
-        </button>
-      </form>
     </main>
   );
 }

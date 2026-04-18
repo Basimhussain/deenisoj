@@ -11,6 +11,7 @@ export const revalidate = 60;
 
 interface FatwaRow {
   id: string;
+  fatwa_number: number | null;
   question_en: string;
   category: string | null;
   status: QuestionStatus | null;
@@ -23,7 +24,7 @@ async function fetchRecent(): Promise<FatwaRow[]> {
     const { data, error } = await supabase
       .from('fatwas')
       .select(
-        'id, question_en, category, status, published_at, created_at'
+        'id, fatwa_number, question_en, category, status, published_at, created_at'
       )
       .eq('is_public', true)
       .order('published_at', { ascending: false })
@@ -41,7 +42,7 @@ async function fetchImportant(): Promise<FatwaRow[]> {
     const { data, error } = await supabase
       .from('fatwas')
       .select(
-        'id, question_en, category, status, published_at, created_at'
+        'id, fatwa_number, question_en, category, status, published_at, created_at'
       )
       .eq('is_public', true)
       .eq('is_important', true)

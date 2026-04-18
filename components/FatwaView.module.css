@@ -7,9 +7,51 @@
   gap: var(--spacing-lg);
 }
 
+.navBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.saveBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition:
+    color var(--dur-fast) ease,
+    border-color var(--dur-fast) ease,
+    background-color var(--dur-fast) ease;
+}
+
+.saveBtn:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
+
+.saveBtnActive {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
+
+.saveBtn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
 .backLink {
   align-self: flex-start;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.04em;
   color: var(--color-text-muted);
@@ -37,7 +79,7 @@
 }
 
 .category {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -92,7 +134,7 @@
 
 .label {
   margin: 0 0 var(--spacing-md);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -129,13 +171,26 @@
   justify-content: space-between;
   gap: var(--spacing-xs);
   flex-wrap: wrap;
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 0.06em;
   color: var(--color-text-muted);
   padding-top: var(--spacing-md);
   border-top: 1px solid var(--color-border);
   text-transform: uppercase;
   animation: fadeIn var(--dur-slow) ease 300ms both;
+}
+
+.footerRight {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.fatwaNumber {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--color-accent);
 }
 
 @media (min-width: 768px) {

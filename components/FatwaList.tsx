@@ -6,6 +6,7 @@ import styles from './FatwaList.module.css';
 
 export interface FatwaListItem {
   id: string;
+  fatwa_number?: number | null;
   question_en: string;
   category?: string | null;
   published_at?: string | null;
@@ -65,7 +66,12 @@ export default function FatwaList({
               return (
                 <li key={item.id} className={styles.item}>
                   <Link href={`/fatwas/${item.id}`} className={styles.link}>
-                    <span className={styles.question}>{item.question_en}</span>
+                    <span className={styles.question}>
+                      {item.fatwa_number != null && (
+                        <span className={styles.number}>#{item.fatwa_number}</span>
+                      )}
+                      {item.question_en}
+                    </span>
                     <span className={styles.meta}>
                       {item.category && (
                         <span className={styles.category}>{item.category}</span>

@@ -38,6 +38,12 @@ export async function POST(request: Request) {
   try {
     const service = createServiceClient();
 
+    // Assign the next sequential fatwa number
+    const { count: fatwaCount } = await service
+      .from('fatwas')
+      .select('*', { count: 'exact', head: true });
+    const nextNumber = (fatwaCount ?? 0) + 1;
+
     const fatwaInsert: Record<string, unknown> = {
       question_id: question_id ?? null,
       question_en: question_en.trim(),
@@ -46,6 +52,7 @@ export async function POST(request: Request) {
       status: 'answered',
       is_public: !!is_public,
       published_at: is_public ? new Date().toISOString() : null,
+      fatwa_number: nextNumber,
     };
 
     if (typeof is_important === 'boolean') {

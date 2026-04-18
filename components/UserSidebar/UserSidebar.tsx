@@ -2,29 +2,24 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import styles from './AdminSidebar.module.css';
+import styles from './UserSidebar.module.css';
 
 const NAV_ITEMS = [
   {
-    href: '/admin',
-    label: 'Question Queue',
-    description: 'Review and respond to submitted questions',
+    href: '/dashboard',
+    label: 'My Questions',
+    description: 'Questions you have submitted',
     exact: true,
   },
   {
-    href: '/admin/published',
-    label: 'Published Fatawas',
-    description: 'Questions answered and published as fatawas',
+    href: '/dashboard/saved',
+    label: 'Saved Fatawas',
+    description: 'Bookmarked fatawas for later',
   },
   {
-    href: '/admin/categories',
-    label: 'Categories',
-    description: 'Manage fatwa categories',
-  },
-  {
-    href: '/admin/footer',
-    label: 'Footer',
-    description: 'Customize footer sections and links',
+    href: '/dashboard/profile',
+    label: 'Profile',
+    description: 'Edit your display name and phone',
   },
 ];
 
@@ -34,17 +29,14 @@ interface Props {
   phone: string | null;
 }
 
-export default function AdminSidebar({ email, displayName, phone }: Props) {
+export default function UserSidebar({ email, displayName, phone }: Props) {
   const pathname = usePathname();
 
-  if (pathname === '/admin/login') return null;
-
   return (
-    <nav className={styles.card} aria-label="Admin navigation">
+    <nav className={styles.card} aria-label="Account navigation">
       <div className={styles.header}>
-        <span className={styles.eyebrow}>Navigation</span>
-        <h3 className={styles.title}>Admin</h3>
-        <span className={styles.accent} aria-hidden="true" />
+        <span className={styles.eyebrow}>Account</span>
+        <h3 className={styles.title}>Dashboard</h3>
       </div>
       <ul className={styles.list}>
         {NAV_ITEMS.map((item) => {

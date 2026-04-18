@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useToast } from '@/components/Toast';
 import styles from './DeleteButton.module.css';
 
 interface Props {
@@ -20,6 +21,7 @@ export default function DeleteButton({
   redirectTo,
 }: Props) {
   const router = useRouter();
+  const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -50,6 +52,7 @@ export default function DeleteButton({
         throw new Error(b.error || 'Delete failed');
       }
       setOpen(false);
+      toast('Deleted successfully.', 'info');
       if (onDeleted) onDeleted();
       if (redirectTo) {
         router.push(redirectTo);
@@ -57,7 +60,9 @@ export default function DeleteButton({
         router.refresh();
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Delete failed');
+      const msg = err instanceof Error ? err.message : 'Delete failed';
+      setError(msg);
+      toast(msg, 'error');
     } finally {
       setDeleting(false);
     }

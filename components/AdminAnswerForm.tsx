@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { QuestionStatus, ScholarDecision } from '@/lib/schemas';
+import { useToast } from '@/components/Toast';
 import styles from './AdminAnswerForm.module.css';
 
 interface Draft {
@@ -62,6 +63,7 @@ export default function AdminAnswerForm({
   scholarResponses,
 }: Props) {
   const router = useRouter();
+  const { toast } = useToast();
   const [status, setStatus] = useState<QuestionStatus>(initialStatus);
   const [questionEn, setQuestionEn] = useState(questionText);
   const [answerEn, setAnswerEn] = useState('');
@@ -81,8 +83,6 @@ export default function AdminAnswerForm({
       setReviewLink(`${window.location.origin}/review/${existingReviewToken}`);
     }
   }, [existingReviewToken]);
-  const [message, setMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [draftSavedAt, setDraftSavedAt] = useState<number | null>(null);
   const [hydrated, setHydrated] = useState(false);
   const [categories, setCategories] = useState<CategoryOption[]>([]);
@@ -154,10 +154,9 @@ export default function AdminAnswerForm({
     try {
       window.localStorage.setItem(draftKey(questionId), JSON.stringify(draft));
       setDraftSavedAt(Date.now());
-      setMessage('Draft saved locally.');
-      setTimeout(() => setMessage(null), 2000);
+      toast('Draft saved locally.', 'success');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save draft');
+      toast(err instanceof Error ? err.message : 'Failed to save draft', 'error');
     }
   };
 
@@ -170,14 +169,11 @@ export default function AdminAnswerForm({
     setIsPublic(defaultPublic);
     setIsImportant(false);
     setDraftSavedAt(null);
-    setMessage('Draft cleared.');
-    setTimeout(() => setMessage(null), 2000);
+    toast('Draft cleared.', 'info');
   };
 
   const saveStatus = async () => {
     setSaving(true);
-    setError(null);
-    setMessage(null);
     try {
       const res = await fetch(`/api/admin/questions/${questionId}`, {
         method: 'PATCH',
@@ -188,10 +184,10 @@ export default function AdminAnswerForm({
         const b = await res.json().catch(() => ({}));
         throw new Error(b.error || 'Failed to update');
       }
-      setMessage('Status updated.');
+      toast('Status updated.', 'success');
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed');
+      toast(err instanceof Error ? err.message : 'Failed to update status', 'error');
     } finally {
       setSaving(false);
     }
@@ -199,14 +195,10 @@ export default function AdminAnswerForm({
 
   const requestScholarReview = async () => {
     if (answerEn.trim().length < 20) {
-      setError(
-        'Write a draft answer (at least 20 characters) before generating a review link.'
-      );
+      toast('Write a draft answer (at least 20 characters) before generating a review link.', 'error');
       return;
     }
     setRequestingReview(true);
-    setError(null);
-    setMessage(null);
     setReviewLink(null);
     setCopied(false);
     try {
@@ -228,10 +220,10 @@ export default function AdminAnswerForm({
       if (!token) throw new Error('Missing token in response');
       const url = `${window.location.origin}/review/${token}`;
       setReviewLink(url);
-      setMessage('Review link created. Send it to the scholar.');
+      toast('Review link created. Send it to the scholar.', 'success');
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed');
+      toast(err instanceof Error ? err.message : 'Failed to create review link', 'error');
     } finally {
       setRequestingReview(false);
     }
@@ -243,19 +235,18 @@ export default function AdminAnswerForm({
       await navigator.clipboard.writeText(reviewLink);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+      toast('Review link copied to clipboard.', 'success');
     } catch {
-      setError('Copy failed — select the link manually.');
+      toast('Copy failed — select the link manually.', 'error');
     }
   };
 
   const publishFatwa = async () => {
     if (!answerEn.trim() || answerEn.trim().length < 20) {
-      setError('Answer must be at least 20 characters.');
+      toast('Answer must be at least 20 characters.', 'error');
       return;
     }
     setPublishing(true);
-    setError(null);
-    setMessage(null);
     try {
       const res = await fetch('/api/admin/fatwas', {
         method: 'POST',
@@ -273,13 +264,13 @@ export default function AdminAnswerForm({
         const b = await res.json().catch(() => ({}));
         throw new Error(b.error || 'Failed to publish');
       }
-      setMessage('Fatwa published. Question marked as answered.');
+      toast('Fatwa published. Question marked as answered.', 'success');
       if (typeof window !== 'undefined') {
         window.localStorage.removeItem(draftKey(questionId));
       }
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed');
+      toast(err instanceof Error ? err.message : 'Failed to publish fatwa', 'error');
     } finally {
       setPublishing(false);
     }
@@ -287,17 +278,6 @@ export default function AdminAnswerForm({
 
   return (
     <div className={styles.wrap}>
-      {message && (
-        <div className={styles.success} role="status">
-          {message}
-        </div>
-      )}
-      {error && (
-        <div className={styles.error} role="alert">
-          {error}
-        </div>
-      )}
-
       <section className={styles.section}>
         <h2 className={styles.sectionHeading}>Status</h2>
         <div className={styles.statusRow}>

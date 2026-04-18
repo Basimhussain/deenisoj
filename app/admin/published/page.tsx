@@ -9,6 +9,7 @@ export const dynamic = 'force-dynamic';
 
 interface FatwaRow {
   id: string;
+  fatwa_number: number | null;
   question_id: string | null;
   question_en: string;
   answer_en: string;
@@ -41,7 +42,7 @@ export default async function PublishedFatawasPage() {
   const { data, error } = await supabase
     .from('fatwas')
     .select(
-      'id, question_id, question_en, answer_en, category, is_public, is_important, published_at, created_at'
+      'id, fatwa_number, question_id, question_en, answer_en, category, is_public, is_important, published_at, created_at'
     )
     .order('created_at', { ascending: false });
 
@@ -94,6 +95,11 @@ export default async function PublishedFatawasPage() {
                     </span>
                   )}
                   <span className={styles.meta}>
+                    {f.fatwa_number != null && (
+                      <span style={{ color: 'var(--color-accent)', fontWeight: 600 }}>
+                        #{f.fatwa_number} ·{' '}
+                      </span>
+                    )}
                     {f.category || 'Uncategorized'} ·{' '}
                     {new Date(f.published_at || f.created_at).toLocaleDateString(
                       undefined,

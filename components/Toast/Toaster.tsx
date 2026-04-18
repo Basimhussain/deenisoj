@@ -1,0 +1,61 @@
+'use client';
+
+import { AnimatePresence, motion } from 'framer-motion';
+import { useToast } from './ToastContext';
+import styles from './Toaster.module.css';
+
+const ICONS = {
+  success: (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
+  ),
+  error: (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 8v4M12 16h.01" />
+    </svg>
+  ),
+  info: (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 16v-4M12 8h.01" />
+    </svg>
+  ),
+};
+
+export default function Toaster() {
+  const { toasts, dismiss } = useToast();
+
+  return (
+    <div className={styles.container} aria-live="polite" aria-atomic="false">
+      <AnimatePresence initial={false}>
+        {toasts.map((t) => (
+          <motion.div
+            key={t.id}
+            layout
+            initial={{ opacity: 0, y: -16, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -8, scale: 0.95 }}
+            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+            className={`${styles.toast} ${styles[t.variant]}`}
+            role={t.variant === 'error' ? 'alert' : 'status'}
+          >
+            <span className={styles.icon}>{ICONS[t.variant]}</span>
+            <span>{t.message}</span>
+            <button
+              className={styles.dismiss}
+              onClick={() => dismiss(t.id)}
+              aria-label="Dismiss"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 6 6 18M6 6l12 12" />
+              </svg>
+            </button>
+            <span className={styles.bar} aria-hidden="true" />
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </div>
+  );
+}

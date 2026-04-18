@@ -19,6 +19,35 @@
   border-color: var(--color-accent);
 }
 
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform var(--dur-fast) ease;
+}
+
+.trigger:hover {
+  transform: translateY(-1px);
+}
+
+.trigger:hover .avatar {
+  box-shadow: var(--shadow-sm);
+}
+
+.displayName {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text);
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .avatar {
   width: 36px;
   height: 36px;
@@ -32,18 +61,11 @@
   color: #ffffff;
   font-size: 13px;
   font-weight: 600;
-  cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition:
-    transform var(--dur-fast) ease,
-    box-shadow var(--dur-fast) ease;
-}
-
-.avatar:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+  transition: box-shadow var(--dur-fast) ease;
 }
 
 .menu {
@@ -140,4 +162,21 @@
 .menuItemSignout:hover {
   background: rgba(239, 68, 68, 0.06);
   color: #dc2626;
+}
+
+.adminChip {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 30%, transparent);
+  transition: opacity var(--dur-fast) ease;
+}
+
+.adminChip:hover {
+  opacity: 0.75;
 }

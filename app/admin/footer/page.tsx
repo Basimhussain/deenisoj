@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import ConfirmModal from '@/components/ConfirmModal';
+import { useToast } from '@/components/Toast';
 import styles from './footer.module.css';
 
 interface FooterSection {
@@ -21,11 +22,10 @@ interface FooterItem {
 }
 
 export default function AdminFooterPage() {
+  const { toast } = useToast();
   const [sections, setSections] = useState<FooterSection[]>([]);
   const [items, setItems] = useState<FooterItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [message, setMessage] = useState<string | null>(null);
 
   // Section form
   const [sectionName, setSectionName] = useState('');
@@ -73,7 +73,7 @@ export default function AdminFooterPage() {
         setSection(secs[0].name);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load');
+      toast(err instanceof Error ? err.message : 'Failed to load footer data', 'error');
     } finally {
       setLoading(false);
     }
@@ -84,18 +84,12 @@ export default function AdminFooterPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const flash = (msg: string) => {
-    setMessage(msg);
-    setTimeout(() => setMessage(null), 3000);
-  };
-
   // ── Section CRUD ──────────────────────────────────────────
 
   const handleAddSection = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!sectionName.trim()) return;
     setSavingSection(true);
-    setError(null);
     try {
       const res = await fetch('/api/admin/footer-sections', {
         method: 'POST',
@@ -111,10 +105,10 @@ export default function AdminFooterPage() {
       }
       setSectionName('');
       setSectionOrder(0);
-      flash('Section added.');
+      toast('Section added.', 'success');
       await fetchAll();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed');
+      toast(err instanceof Error ? err.message : 'Failed to add section', 'error');
     } finally {
       setSavingSection(false);
     }
@@ -127,7 +121,6 @@ export default function AdminFooterPage() {
   };
 
   const handleUpdateSection = async (id: string) => {
-    setError(null);
     try {
       const res = await fetch(`/api/admin/footer-sections/${id}`, {
         method: 'PATCH',
@@ -142,10 +135,10 @@ export default function AdminFooterPage() {
         throw new Error(b.error || 'Failed to update');
       }
       setEditingSectionId(null);
-      flash('Section updated.');
+      toast('Section updated.', 'success');
       await fetchAll();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed');
+      toast(err instanceof Error ? err.message : 'Failed to update section', 'error');
     }
   };
 
@@ -157,7 +150,6 @@ export default function AdminFooterPage() {
     setConfirmMessage(msg);
     setConfirmAction(() => async () => {
       setConfirmLoading(true);
-      setError(null);
       try {
         const res = await fetch(`/api/admin/footer-sections/${id}`, {
           method: 'DELETE',
@@ -167,10 +159,10 @@ export default function AdminFooterPage() {
           throw new Error(b.error || 'Failed to delete');
         }
         setConfirmOpen(false);
-        flash('Section deleted.');
+        toast('Section deleted.', 'info');
         await fetchAll();
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed');
+        toast(err instanceof Error ? err.message : 'Failed to delete section', 'error');
         setConfirmOpen(false);
       } finally {
         setConfirmLoading(false);
@@ -185,7 +177,6 @@ export default function AdminFooterPage() {
     e.preventDefault();
     if (!label.trim() || !section) return;
     setSaving(true);
-    setError(null);
     try {
       const res = await fetch('/api/admin/footer-items', {
         method: 'POST',
@@ -204,10 +195,10 @@ export default function AdminFooterPage() {
       setLabel('');
       setUrl('');
       setSortOrder(0);
-      flash('Footer item added.');
+      toast('Footer item added.', 'success');
       await fetchAll();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed');
+      toast(err instanceof Error ? err.message : 'Failed to add footer item', 'error');
     } finally {
       setSaving(false);
     }
@@ -222,7 +213,6 @@ export default function AdminFooterPage() {
   };
 
   const handleUpdateItem = async (id: string) => {
-    setError(null);
     try {
       const res = await fetch(`/api/admin/footer-items/${id}`, {
         method: 'PATCH',
@@ -239,10 +229,10 @@ export default function AdminFooterPage() {
         throw new Error(b.error || 'Failed to update');
       }
       setEditingId(null);
-      flash('Footer item updated.');
+      toast('Footer item updated.', 'success');
       await fetchAll();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed');
+      toast(err instanceof Error ? err.message : 'Failed to update footer item', 'error');
     }
   };
 
@@ -250,7 +240,6 @@ export default function AdminFooterPage() {
     setConfirmMessage(`Delete footer item "${itemLabel}"?`);
     setConfirmAction(() => async () => {
       setConfirmLoading(true);
-      setError(null);
       try {
         const res = await fetch(`/api/admin/footer-items/${id}`, {
           method: 'DELETE',
@@ -260,10 +249,10 @@ export default function AdminFooterPage() {
           throw new Error(b.error || 'Failed to delete');
         }
         setConfirmOpen(false);
-        flash('Footer item deleted.');
+        toast('Footer item deleted.', 'info');
         await fetchAll();
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed');
+        toast(err instanceof Error ? err.message : 'Failed to delete footer item', 'error');
         setConfirmOpen(false);
       } finally {
         setConfirmLoading(false);
@@ -285,17 +274,6 @@ export default function AdminFooterPage() {
           Manage footer sections and their items.
         </p>
       </header>
-
-      {message && (
-        <div className={styles.success} role="status">
-          {message}
-        </div>
-      )}
-      {error && (
-        <div className={styles.error} role="alert">
-          {error}
-        </div>
-      )}
 
       {/* ── Sections management ────────────────────────────── */}
       <section className={styles.card}>
