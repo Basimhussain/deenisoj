@@ -172,9 +172,17 @@ export async function GET(
       `,
     });
 
-    // Ensure Google Fonts (Noto Nastaliq Urdu, Amiri, Instrument Serif)
-    // are fully loaded before we snapshot the PDF.
-    await page.evaluate(() => (document as Document & { fonts: FontFaceSet }).fonts.ready);
+    // Ensure Google Fonts (Noto Nastaliq Urdu, Noto Naskh Arabic, Amiri,
+    // Instrument Serif) are fully loaded before we snapshot the PDF. Google
+    // Fonts splits fonts by unicode-range and fetches subsets lazily as glyphs
+    // are laid out, so `fonts.ready` needs a re-check + short settle after the
+    // first resolution in case late RTL subsets kick off a second wave.
+    await page.evaluate(async () => {
+      const d = document as Document & { fonts: FontFaceSet };
+      await d.fonts.ready;
+      await new Promise((r) => setTimeout(r, 250));
+      await d.fonts.ready;
+    });
 
     pdfBuffer = Buffer.from(
       await page.pdf({

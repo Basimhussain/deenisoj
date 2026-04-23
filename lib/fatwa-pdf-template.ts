@@ -111,7 +111,7 @@ export function buildFatwaHtml(data: FatwaPdfData): string {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
   rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Amiri:wght@400;700&family=Amiri+Quran&display=swap"
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Amiri:wght@400;700&family=Amiri+Quran&display=block"
 />
 <style>
   * { box-sizing: border-box; }
@@ -121,7 +121,10 @@ export function buildFatwaHtml(data: FatwaPdfData): string {
     padding: 0;
     color: #1a1a1a;
     background: #ffffff;
-    font-family: 'Instrument Serif', 'Times New Roman', Times, serif;
+    /* Inline Arabic/Urdu within English body falls through Instrument Serif → Noto
+       Naskh Arabic (full Arabic + Urdu coverage). Nastaliq is the last resort so
+       Urdu-only glyphs like ٹ ڈ چ گ ک ہ ے still render if Naskh misses anything. */
+    font-family: 'Instrument Serif', 'Noto Naskh Arabic', 'Amiri', 'Noto Nastaliq Urdu', 'Times New Roman', Times, serif;
     font-size: 11.5pt;
     line-height: 1.75;
     -webkit-font-smoothing: antialiased;
@@ -129,9 +132,9 @@ export function buildFatwaHtml(data: FatwaPdfData): string {
 
   /* Arabic (default Quranic invocation, wallahu aalam) */
   .arabic, [lang="ar"] {
-    font-family: 'Amiri', 'Scheherazade New', 'Traditional Arabic', serif;
+    font-family: 'Amiri', 'Noto Naskh Arabic', 'Scheherazade New', 'Traditional Arabic', serif;
     direction: rtl;
-    unicode-bidi: embed;
+    unicode-bidi: isolate;
   }
 
   /* Urdu — Noto Nastaliq Urdu, matches website */
