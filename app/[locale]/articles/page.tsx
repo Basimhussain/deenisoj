@@ -18,35 +18,45 @@ interface Row {
   categories: CategoryRef | null;
 }
 
+async function fetchArticles(): Promise<{ rows: Row[]; authorMap: Record<string, string | null> }> {
+  try {
+    const service = createServerClient();
+    const { data, error } = await service
+      .from('articles')
+      .select(
+        'id, slug, author_id, title_en, title_ur, excerpt_en, excerpt_ur, published_at, categories:category_id(id, name, name_ur, slug)'
+      )
+      .eq('status', 'published')
+      .order('published_at', { ascending: false });
+    if (error) throw error;
+    const rows = ((data ?? []) as unknown as Row[]);
+
+    const authorIds = Array.from(new Set(rows.map((r) => r.author_id)));
+    let authorMap: Record<string, string | null> = {};
+    if (authorIds.length) {
+      const { data: profs } = await service
+        .from('profiles')
+        .select('id, display_name')
+        .in('id', authorIds);
+      authorMap = Object.fromEntries(
+        (profs ?? []).map((p: { id: string; display_name: string | null }) => [
+          p.id,
+          p.display_name,
+        ])
+      );
+    }
+    return { rows, authorMap };
+  } catch (err) {
+    console.error('fetchArticles failed:', err);
+    return { rows: [], authorMap: {} };
+  }
+}
+
 export default async function ArticlesListPage() {
   const t = await getTranslations('public.articles');
   const locale = await getLocale();
 
-  const service = createServerClient();
-  const { data } = await service
-    .from('articles')
-    .select(
-      'id, slug, author_id, title_en, title_ur, excerpt_en, excerpt_ur, published_at, categories:category_id(id, name, name_ur, slug)'
-    )
-    .eq('status', 'published')
-    .order('published_at', { ascending: false });
-
-  const rows = ((data ?? []) as unknown as Row[]);
-
-  const authorIds = Array.from(new Set(rows.map((r) => r.author_id)));
-  let authorMap: Record<string, string | null> = {};
-  if (authorIds.length) {
-    const { data: profs } = await service
-      .from('profiles')
-      .select('id, display_name')
-      .in('id', authorIds);
-    authorMap = Object.fromEntries(
-      (profs ?? []).map((p: { id: string; display_name: string | null }) => [
-        p.id,
-        p.display_name,
-      ])
-    );
-  }
+  const { rows, authorMap } = await fetchArticles();
 
   return (
     <main className={styles.main}>

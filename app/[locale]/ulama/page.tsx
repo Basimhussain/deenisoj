@@ -21,14 +21,19 @@ export default async function UlamaListPage({
   const locale = params.locale as 'en' | 'ur';
   const t = await getTranslations('public.ulama');
 
-  const service = createServerClient();
-  const { data } = await service
-    .from('ulama')
-    .select('id, name, summary')
-    .order('sort_order', { ascending: true })
-    .order('created_at', { ascending: false });
-
-  const rows = (data ?? []) as UlamaRow[];
+  let rows: UlamaRow[] = [];
+  try {
+    const service = createServerClient();
+    const { data, error } = await service
+      .from('ulama')
+      .select('id, name, summary')
+      .order('sort_order', { ascending: true })
+      .order('created_at', { ascending: false });
+    if (error) throw error;
+    rows = (data ?? []) as UlamaRow[];
+  } catch (err) {
+    console.error('UlamaListPage fetch failed:', err);
+  }
 
   function localize(field: LocalizedField): string {
     if (!field) return '';

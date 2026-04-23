@@ -25,15 +25,21 @@ export default async function UlamaDetailPage({
   const locale = params.locale as 'en' | 'ur';
   const t = await getTranslations('public.ulama');
 
-  const service = createServerClient();
-  const { data } = await service
-    .from('ulama')
-    .select('id, name, summary, education, teachers, bio')
-    .eq('id', params.id)
-    .maybeSingle();
+  let u: Ulama | null = null;
+  try {
+    const service = createServerClient();
+    const { data, error } = await service
+      .from('ulama')
+      .select('id, name, summary, education, teachers, bio')
+      .eq('id', params.id)
+      .maybeSingle();
+    if (error) throw error;
+    u = data as Ulama | null;
+  } catch (err) {
+    console.error('UlamaDetailPage fetch failed:', err);
+  }
 
-  if (!data) notFound();
-  const u = data as Ulama;
+  if (!u) notFound();
 
   function localize(field: LocalizedText): string {
     if (!field) return '';

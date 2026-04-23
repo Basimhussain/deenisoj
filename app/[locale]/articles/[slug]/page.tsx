@@ -30,38 +30,49 @@ export default async function ArticleDetailPage({
   const t = await getTranslations('public.articles');
   const locale = await getLocale();
 
-  const service = createServerClient();
+  let article: Article | null = null;
+  let authorProf: { display_name: string | null } | null = null;
+  try {
+    const service = createServerClient();
 
-  // Try slug lookup first; fall back to id
-  let { data } = await service
-    .from('articles')
-    .select(
-      'id, slug, author_id, title_en, title_ur, excerpt_en, excerpt_ur, body_en, body_ur, published_at, categories:category_id(id, name, name_ur, slug)'
-    )
-    .eq('slug', params.slug)
-    .eq('status', 'published')
-    .maybeSingle();
-
-  if (!data) {
-    const fallback = await service
+    // Try slug lookup first; fall back to id
+    const { data, error } = await service
       .from('articles')
       .select(
         'id, slug, author_id, title_en, title_ur, excerpt_en, excerpt_ur, body_en, body_ur, published_at, categories:category_id(id, name, name_ur, slug)'
       )
-      .eq('id', params.slug)
+      .eq('slug', params.slug)
       .eq('status', 'published')
       .maybeSingle();
-    data = fallback.data;
+    if (error) throw error;
+    let row = data;
+
+    if (!row) {
+      const fallback = await service
+        .from('articles')
+        .select(
+          'id, slug, author_id, title_en, title_ur, excerpt_en, excerpt_ur, body_en, body_ur, published_at, categories:category_id(id, name, name_ur, slug)'
+        )
+        .eq('id', params.slug)
+        .eq('status', 'published')
+        .maybeSingle();
+      row = fallback.data;
+    }
+
+    if (row) {
+      article = row as unknown as Article;
+      const { data: prof } = await service
+        .from('profiles')
+        .select('display_name')
+        .eq('id', article.author_id)
+        .maybeSingle();
+      authorProf = prof;
+    }
+  } catch (err) {
+    console.error('ArticleDetailPage fetch failed:', err);
   }
 
-  if (!data) notFound();
-  const article = data as unknown as Article;
-
-  const { data: authorProf } = await service
-    .from('profiles')
-    .select('display_name')
-    .eq('id', article.author_id)
-    .maybeSingle();
+  if (!article) notFound();
 
   const showUrdu = locale === 'ur' && !!article.title_ur;
   const pendingUrdu = locale === 'ur' && !article.title_ur;
