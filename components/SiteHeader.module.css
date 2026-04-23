@@ -287,6 +287,12 @@
   transform: translateX(0);
 }
 
+/* The [dir='rtl'] rule above has higher specificity than plain .drawerOpen
+   and would otherwise keep the Urdu drawer translated off-screen. */
+[dir='rtl'] .drawer.drawerOpen {
+  transform: translateX(0);
+}
+
 .drawerHeader {
   display: flex;
   align-items: center;
