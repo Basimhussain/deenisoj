@@ -7,6 +7,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { marked } from 'marked';
 
 // Bundle the Arabic-range woff2 files directly into the generated HTML as
 // base64 data URIs so Chromium on @sparticuz/chromium (Vercel Lambda) never
@@ -133,6 +134,22 @@ export function buildFatwaHtml(data: FatwaPdfData): string {
         published: 'Published',
       };
 
+  // Render reference text as inline markdown so `[label](url)` becomes a
+  // clickable link. If the text is just a bare URL, auto-link it.
+  const URL_RE = /^(https?:\/\/\S+)$/i;
+  const renderReferenceText = (text: string, explicitUrl?: string): string => {
+    if (explicitUrl) {
+      return `${marked.parseInline(text, { async: false }) as string} <a href="${escapeHtml(
+        explicitUrl
+      )}">${escapeHtml(explicitUrl)}</a>`;
+    }
+    if (URL_RE.test(text.trim())) {
+      const url = text.trim();
+      return `<a href="${escapeHtml(url)}">${escapeHtml(url)}</a>`;
+    }
+    return marked.parseInline(text, { async: false }) as string;
+  };
+
   const referencesHtml = references.length
     ? `
     <hr class="divider" />
@@ -142,10 +159,9 @@ export function buildFatwaHtml(data: FatwaPdfData): string {
         ${references
           .map(
             (r) => `
-          <li>
+          <li id="ref-${escapeHtml(r.label)}">
             <strong>[${escapeHtml(r.label)}]</strong>
-            <span>${escapeHtml(r.text)}</span>
-            ${r.url ? `<a href="${escapeHtml(r.url)}">${escapeHtml(r.url)}</a>` : ''}
+            <span>${renderReferenceText(r.text, r.url)}</span>
           </li>
         `
           )
