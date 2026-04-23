@@ -6,6 +6,9 @@ out
 .env.*.local
 .DS_Store
 *.log
+*.tsbuildinfo
+sql_check.js
+test_arabic.js
 
 
 .claude/

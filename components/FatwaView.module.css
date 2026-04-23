@@ -13,6 +13,30 @@
   justify-content: space-between;
 }
 
+.navActions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.pendingBanner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--color-accent-soft);
+  border: 1px solid rgba(201, 168, 114, 0.3);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-size: var(--font-small);
+  line-height: 1.5;
+}
+
+.pendingIcon {
+  font-size: 16px;
+  line-height: 1;
+}
+
 .saveBtn {
   display: inline-flex;
   align-items: center;
@@ -122,14 +146,25 @@
   animation: fadeInUp var(--dur-slow) var(--ease-out-expo) both;
 }
 
-.questionCard {
+.fatwaCard {
   padding-top: var(--spacing-md);
 }
 
-.answerCard {
-  padding-top: var(--spacing-lg);
+.divider {
+  border: none;
   border-top: 1px solid var(--color-border);
-  animation-delay: 100ms;
+  margin: var(--spacing-xl) 0;
+}
+
+.defaultArabic,
+.wallahuAalam {
+  font-family: 'Amiri Quran', 'Amiri', 'Lateef', 'Traditional Arabic', var(--font-serif);
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1.8;
+  color: var(--color-text);
+  margin: var(--spacing-md) 0;
+  text-align: center;
 }
 
 .label {
@@ -165,6 +200,78 @@
   margin-bottom: 0;
 }
 
+.answerText h1,
+.answerText h2,
+.answerText h3,
+.answerText h4 {
+  margin: var(--spacing-lg) 0 var(--spacing-sm);
+  font-family: var(--font-serif);
+  font-weight: 500;
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+}
+
+.answerText h1 { font-size: 22px; }
+.answerText h2 { font-size: 20px; }
+.answerText h3 { font-size: 18px; }
+.answerText h4 { font-size: 17px; }
+
+.answerText strong {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.answerText ul,
+.answerText ol {
+  margin: 0 0 var(--spacing-md);
+  padding-left: 1.5em;
+}
+
+.answerText li {
+  margin-bottom: 4px;
+}
+
+.answerText hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: var(--spacing-lg) 0;
+}
+
+.answerText blockquote {
+  margin: 0 0 var(--spacing-md);
+  padding-left: 1em;
+  border-left: 3px solid var(--color-accent);
+  color: var(--color-text-muted);
+}
+
+.referencesList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+.referenceItem {
+  display: flex;
+  gap: 8px;
+}
+
+.referenceItem strong {
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.referenceItem a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.referenceItem a:hover {
+  text-decoration: underline;
+}
+
 .footer {
   display: flex;
   align-items: center;
@@ -193,9 +300,287 @@
   color: var(--color-accent);
 }
 
+/* These elements are hidden on screen and only revealed in print */
+.pdfWatermark,
+.pdfQrCode,
+.pdfHeader,
+.pdfMeta {
+  display: none;
+}
+
 @media (min-width: 768px) {
   .main {
     padding: var(--spacing-2xl) var(--spacing-lg);
     gap: var(--spacing-xl);
+  }
+}
+
+/* =========================================================================
+   PRINT STYLES
+   Goal: clean, spacious, website-matching layout with watermark + QR code
+   that appear on every page. Avoid cramming content into leftover space.
+   ========================================================================= */
+@media print {
+  @page {
+    size: A4;
+    margin: 20mm 18mm 25mm 18mm; /* Increased bottom to prevent QR overlap */
+  }
+
+  /* NB: truly global print resets (:root/html/body) live in app/globals.css
+     since CSS Modules require at least one local selector per rule. */
+
+  /* Hide all on-screen chrome */
+  .navBar,
+  .topBar,
+  .footer,
+  .pendingBanner,
+  .backLink,
+  .saveBtn,
+  .langToggle,
+  .navActions {
+    display: none !important;
+  }
+
+  /* Main container — reset web spacing, let @page margins handle it */
+  .main {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    gap: 0;
+    display: block;
+  }
+
+  .card,
+  .fatwaCard {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    animation: none !important;
+  }
+
+  /* -----------------------------------------------------------------------
+     PDF-only header block (shown on first page only, at the top).
+     Contains the logo + site name above the QUESTION label.
+     ----------------------------------------------------------------------- */
+  .pdfHeader {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 8mm;
+    margin-bottom: 10mm;
+    border-bottom: 1px solid #d4d4d4;
+  }
+
+  .pdfHeader img {
+    height: 14mm;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .pdfHeaderMeta {
+    text-align: right;
+    font-size: 9pt;
+    color: #666;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1.5;
+  }
+
+  /* -----------------------------------------------------------------------
+     Typography rhythm for print
+     ----------------------------------------------------------------------- */
+  .label {
+    font-size: 8.5pt;
+    letter-spacing: 0.2em;
+    color: #888;
+    margin: 0 0 6mm;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  .questionText {
+    font-size: 22pt;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #1a1a1a;
+    margin: 0 0 10mm;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  /* Spacer divider between Question / Answer / References sections */
+  .divider {
+    margin: 8mm 0;
+    border-top: 1px solid #d4d4d4;
+  }
+
+  /* Opening Arabic invocation — centered, keep together, don't let it
+     dangle alone at the bottom of a page */
+  .defaultArabic,
+  .wallahuAalam {
+    font-size: 16pt;
+    line-height: 1.9;
+    text-align: center;
+    margin: 6mm 0 8mm;
+    color: #1a1a1a;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* -----------------------------------------------------------------------
+     Answer body — the main fix for your "cluttered" layout is here.
+     Each semantic block is a break-avoid unit so content flows to a new
+     page gracefully instead of being crammed in.
+     ----------------------------------------------------------------------- */
+  .answerText {
+    font-size: 11.5pt;
+    line-height: 1.75;
+    color: #1a1a1a;
+    orphans: 3; /* min lines of a paragraph at bottom of page */
+    widows: 3;  /* min lines of a paragraph at top of next page */
+  }
+
+  .answerText p {
+    margin: 0 0 4mm;
+    page-break-inside: avoid;
+    break-inside: avoid-page;
+  }
+
+  /* Headings should never be the last thing on a page */
+  .answerText h1,
+  .answerText h2,
+  .answerText h3,
+  .answerText h4 {
+    margin: 7mm 0 3mm;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: #1a1a1a;
+    page-break-after: avoid;
+    break-after: avoid;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .answerText h1 { font-size: 15pt; }
+  .answerText h2 { font-size: 13.5pt; }
+  .answerText h3 { font-size: 12.5pt; }
+  .answerText h4 { font-size: 11.5pt; }
+
+  /* Lists — keep each item together, keep the whole list from splitting
+     too aggressively */
+  .answerText ul,
+  .answerText ol {
+    margin: 0 0 4mm;
+    padding-left: 6mm;
+  }
+
+  .answerText li {
+    margin-bottom: 2mm;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .answerText blockquote {
+    margin: 0 0 4mm;
+    padding-left: 4mm;
+    border-left: 2px solid #c9a872;
+    color: #555;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .answerText hr {
+    margin: 6mm 0;
+    border-top: 1px solid #d4d4d4;
+  }
+
+  .answerText strong {
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  /* References block — keep together if it fits, otherwise split cleanly */
+  .referencesList {
+    font-size: 10pt;
+    line-height: 1.6;
+    color: #555;
+  }
+
+  .referenceItem {
+    margin-bottom: 2mm;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .referenceItem a {
+    color: #1a1a1a;
+    text-decoration: none;
+  }
+
+  /* Watermark moved to global body::before to prevent flex-box disruption */
+
+  /* -----------------------------------------------------------------------
+     QR CODE — bottom-right of every page, inside the page margin.
+     ----------------------------------------------------------------------- */
+  .pdfQrCode {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5mm;
+    position: fixed;
+    bottom: 6mm;
+    right: 6mm;
+    width: 18mm;
+    z-index: 100;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .pdfQrCode img,
+  .pdfQrCode canvas,
+  .pdfQrCode svg {
+    width: 18mm;
+    height: 18mm;
+    display: block;
+    background: #fff;
+  }
+
+  .pdfQrCode span {
+    font-size: 6.5pt;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #888;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  /* Fatwa number / published date strip at the very end of content
+     (replacement for the on-screen .footer which is hidden in print) */
+  .pdfMeta {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10mm;
+    padding-top: 4mm;
+    border-top: 1px solid #d4d4d4;
+    font-size: 8.5pt;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #888;
+  }
+
+  .pdfMeta strong {
+    color: #c9a872;
+    font-weight: 600;
+  }
+
+  /* Global: avoid splitting obvious atomic elements */
+  .main img,
+  .main figure,
+  .main table {
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
 }

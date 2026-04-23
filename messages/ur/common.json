@@ -1,0 +1,25 @@
+{
+  "common": {
+    "siteName": "دینی ساج",
+    "tagline": "اسلامی سوال و جواب",
+    "loading": "لوڈ ہو رہا ہے…",
+    "save": "محفوظ کریں",
+    "saved": "محفوظ ہو گیا",
+    "cancel": "منسوخ کریں",
+    "delete": "حذف کریں",
+    "edit": "ترمیم",
+    "publish": "شائع کریں",
+    "back": "واپس",
+    "submit": "جمع کرائیں",
+    "search": "تلاش",
+    "signIn": "سائن اِن",
+    "signOut": "سائن آؤٹ",
+    "viewAll": "سب دیکھیں",
+    "translationPending": "ترجمہ زیر التوا",
+    "en": "EN",
+    "ur": "اردو",
+    "localeSwitcherAriaLabel": "زبان تبدیل کریں",
+    "switchToEnglish": "View in English",
+    "switchToUrdu": "اردو میں دیکھیں"
+  }
+}

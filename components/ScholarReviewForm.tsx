@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import styles from './ScholarReviewForm.module.css';
 
 type Decision = 'approved' | 'denied' | 'revised';
@@ -14,6 +15,7 @@ export default function ScholarReviewForm({
   token,
   proposedAnswer,
 }: Props) {
+  const t = useTranslations('admin.review');
   const [decision, setDecision] = useState<Decision>('approved');
   const [scholarName, setScholarName] = useState('');
   const [revisedAnswer, setRevisedAnswer] = useState(proposedAnswer);
@@ -27,11 +29,11 @@ export default function ScholarReviewForm({
     setError(null);
 
     if (scholarName.trim().length < 2) {
-      setError('Please enter your name.');
+      setError(t('errorName'));
       return;
     }
     if (decision === 'revised' && revisedAnswer.trim().length < 20) {
-      setError('Please provide a revised answer (at least 20 characters).');
+      setError(t('errorRevisedAnswer'));
       return;
     }
 
@@ -50,11 +52,11 @@ export default function ScholarReviewForm({
       });
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
-        throw new Error(body.error || 'Failed to submit');
+        throw new Error(body.error || t('errorFailed'));
       }
       setSuccessName(scholarName.trim());
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to submit');
+      setError(err instanceof Error ? err.message : t('errorFailed'));
     } finally {
       setSubmitting(false);
     }
@@ -72,25 +74,30 @@ export default function ScholarReviewForm({
   if (successName) {
     return (
       <div className={styles.form} role="status">
-        <h2 className={styles.head}>Response recorded</h2>
+        <h2 className={styles.head}>{t('successHead')}</h2>
         <p className={styles.bodyText}>
-          Thank you, {successName}. Your review has been sent to the editors.
-          Another scholar can submit a response using this same link.
+          {t('successText', { name: successName })}
         </p>
         <button
           type="button"
           className={styles.submit}
           onClick={resetForAnother}
         >
-          Submit another response
+          {t('submitAnother')}
         </button>
       </div>
     );
   }
 
+  const decisionOptions: [Decision, string][] = [
+    ['approved', t('decisionApprove')],
+    ['denied', t('decisionDeny')],
+    ['revised', t('decisionRevise')],
+  ];
+
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
-      <h2 className={styles.head}>Your response</h2>
+      <h2 className={styles.head}>{t('formHead')}</h2>
 
       {error && (
         <div className={styles.error} role="alert">
@@ -99,15 +106,9 @@ export default function ScholarReviewForm({
       )}
 
       <fieldset className={styles.fieldset}>
-        <legend className={styles.legend}>Decision</legend>
+        <legend className={styles.legend}>{t('decisionLegend')}</legend>
         <div className={styles.radioGroup}>
-          {(
-            [
-              ['approved', 'Approve'],
-              ['denied', 'Deny'],
-              ['revised', 'Revise'],
-            ] as const
-          ).map(([value, label]) => (
+          {decisionOptions.map(([value, label]) => (
             <label
               key={value}
               className={`${styles.radio} ${
@@ -130,7 +131,7 @@ export default function ScholarReviewForm({
 
       <div className={styles.field}>
         <label htmlFor="sr-name" className={styles.label}>
-          Scholar name
+          {t('scholarNameLabel')}
         </label>
         <input
           id="sr-name"
@@ -140,14 +141,14 @@ export default function ScholarReviewForm({
           onChange={(e) => setScholarName(e.target.value)}
           disabled={submitting}
           required
-          placeholder="Your full name"
+          placeholder={t('scholarNamePlaceholder')}
         />
       </div>
 
       {decision === 'revised' && (
         <div className={styles.field}>
           <label htmlFor="sr-revised" className={styles.label}>
-            Revised answer
+            {t('revisedAnswerLabel')}
           </label>
           <textarea
             id="sr-revised"
@@ -156,14 +157,14 @@ export default function ScholarReviewForm({
             value={revisedAnswer}
             onChange={(e) => setRevisedAnswer(e.target.value)}
             disabled={submitting}
-            placeholder="Write your revised answer…"
+            placeholder={t('revisedAnswerPlaceholder')}
           />
         </div>
       )}
 
       <div className={styles.field}>
         <label htmlFor="sr-comments" className={styles.label}>
-          Comments <span className={styles.optional}>(optional)</span>
+          {t('commentsLabel')} <span className={styles.optional}>{t('commentsOptional')}</span>
         </label>
         <textarea
           id="sr-comments"
@@ -172,7 +173,7 @@ export default function ScholarReviewForm({
           value={comments}
           onChange={(e) => setComments(e.target.value)}
           disabled={submitting}
-          placeholder="Any notes for the editors…"
+          placeholder={t('commentsPlaceholder')}
         />
       </div>
 
@@ -181,7 +182,7 @@ export default function ScholarReviewForm({
         className={styles.submit}
         disabled={submitting}
       >
-        {submitting ? 'Submitting…' : 'Submit response'}
+        {submitting ? t('submittingBtn') : t('submitBtn')}
       </button>
     </form>
   );

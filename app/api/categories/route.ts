@@ -8,7 +8,7 @@ export async function GET() {
     const service = createServiceClient();
     const { data, error } = await service
       .from('categories')
-      .select('id, name, slug')
+      .select('id, name, name_ur, slug')
       .order('sort_order', { ascending: true });
 
     if (error) throw error;

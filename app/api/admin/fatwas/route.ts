@@ -7,8 +7,10 @@ export const runtime = 'nodejs';
 interface Body {
   question_id?: string;
   question_en?: string;
+  question_ur?: string | null;
   answer_en?: string;
-  category?: string | null;
+  answer_ur?: string | null;
+  category_id?: string | null;
   is_public?: boolean;
   is_important?: boolean;
 }
@@ -26,7 +28,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
   }
 
-  const { question_id, question_en, answer_en, category, is_public, is_important } = body;
+  const {
+    question_id,
+    question_en,
+    question_ur,
+    answer_en,
+    answer_ur,
+    category_id,
+    is_public,
+    is_important,
+  } = body;
 
   if (!question_en || question_en.trim().length < 10) {
     return NextResponse.json({ error: 'Question too short' }, { status: 400 });
@@ -47,8 +58,10 @@ export async function POST(request: Request) {
     const fatwaInsert: Record<string, unknown> = {
       question_id: question_id ?? null,
       question_en: question_en.trim(),
+      question_ur: question_ur?.trim() || null,
       answer_en: answer_en.trim(),
-      category: category?.trim() || null,
+      answer_ur: answer_ur?.trim() || null,
+      category_id: category_id || null,
       status: 'answered',
       is_public: !!is_public,
       published_at: is_public ? new Date().toISOString() : null,

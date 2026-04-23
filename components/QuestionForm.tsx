@@ -3,10 +3,12 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useTranslations } from 'next-intl';
 import { questionSchema, type QuestionInput } from '@/lib/schemas';
 import styles from './QuestionForm.module.css';
 
 export default function QuestionForm() {
+  const t = useTranslations('public.questionForm');
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
@@ -41,14 +43,14 @@ export default function QuestionForm() {
 
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
-        throw new Error(body.error || 'Submission failed. Please try again.');
+        throw new Error(body.error || t('defaultSubmitError'));
       }
 
       reset();
       setSuccess(true);
     } catch (err) {
       setSubmitError(
-        err instanceof Error ? err.message : 'Something went wrong'
+        err instanceof Error ? err.message : t('fallbackError')
       );
     }
   };
@@ -56,17 +58,14 @@ export default function QuestionForm() {
   if (success) {
     return (
       <div className={styles.successCard} role="status" aria-live="polite">
-        <h3 className={styles.successTitle}>Question received</h3>
-        <p className={styles.successText}>
-          Thank you. Your question has been submitted and will be reviewed by
-          our team. You will receive a response by email.
-        </p>
+        <h3 className={styles.successTitle}>{t('successTitle')}</h3>
+        <p className={styles.successText}>{t('successText')}</p>
         <button
           type="button"
           className={styles.secondaryButton}
           onClick={() => setSuccess(false)}
         >
-          Ask another question
+          {t('askAnother')}
         </button>
       </div>
     );
@@ -87,9 +86,9 @@ export default function QuestionForm() {
 
       <div className={styles.field}>
         <label htmlFor="qf-name" className={styles.label}>
-          Name{' '}
+          {t('nameLabel')}{' '}
           <span className={styles.muted}>
-            {isAnonymous ? '(hidden)' : '(optional)'}
+            {isAnonymous ? t('nameHidden') : t('nameOptional')}
           </span>
         </label>
         <input
@@ -104,7 +103,7 @@ export default function QuestionForm() {
 
       <div className={styles.field}>
         <label htmlFor="qf-email" className={styles.label}>
-          Email <span className={styles.required}>*</span>
+          {t('emailLabel')} <span className={styles.required}>*</span>
         </label>
         <input
           id="qf-email"
@@ -125,7 +124,7 @@ export default function QuestionForm() {
 
       <div className={styles.field}>
         <label htmlFor="qf-phone" className={styles.label}>
-          Phone <span className={styles.muted}>(optional)</span>
+          {t('phoneLabel')} <span className={styles.muted}>{t('phoneOptional')}</span>
         </label>
         <input
           id="qf-phone"
@@ -139,7 +138,7 @@ export default function QuestionForm() {
 
       <div className={styles.field}>
         <label htmlFor="qf-question" className={styles.label}>
-          Your Question <span className={styles.required}>*</span>
+          {t('questionLabel')} <span className={styles.required}>*</span>
         </label>
         <textarea
           id="qf-question"
@@ -169,7 +168,7 @@ export default function QuestionForm() {
             disabled={isSubmitting}
             {...register('isAnonymous')}
           />
-          <span>Remain anonymous</span>
+          <span>{t('remainAnonymous')}</span>
         </label>
         <label className={styles.checkbox}>
           <input
@@ -177,7 +176,7 @@ export default function QuestionForm() {
             disabled={isSubmitting}
             {...register('allowPublic')}
           />
-          <span>Allow public posting of the answer</span>
+          <span>{t('allowPublic')}</span>
         </label>
       </div>
 
@@ -186,7 +185,7 @@ export default function QuestionForm() {
         className={styles.submitButton}
         disabled={isSubmitting}
       >
-        {isSubmitting ? 'Submitting…' : 'Submit Question'}
+        {isSubmitting ? t('submitting') : t('submitButton')}
       </button>
     </form>
   );

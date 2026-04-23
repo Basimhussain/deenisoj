@@ -1,0 +1,166 @@
+{
+  "public": {
+    "header": {
+      "searchPlaceholder": "فتاوے تلاش کریں\u2026",
+      "searchAriaLabel": "فتاوے تلاش کریں",
+      "homeAriaLabel": "دینی ساج \u2014 ہوم",
+      "seeAllResults": "\u201c{query}\u201d کے تمام نتائج دیکھیں \u2190",
+      "navFeed": "فیڈ",
+      "navArticles": "مضامین",
+      "navUlama": "علماء",
+      "primaryNav": "بنیادی نیویگیشن"
+    },
+    "hero": {
+      "eyebrow": "اسلامی سوال و جواب \u00b7 قیام 2026",
+      "headline1": "فَسْـَٔلُوٓا۟ أَهْلَ ٱلذِّكْرِ",
+      "headline2": "إِن كُنتُمْ لَا تَعْلَمُونَ",
+      "ayahRef": "سورۃ النحل — ١٦:٤٣",
+      "sub": "ایک سنجیدہ اسلامی سوال و جواب کا پلیٹ فارم۔ اپنا سوال جمع کریں اور تصدیق شدہ علما سے غور و خوض پر مبنی جواب حاصل کریں \u2014 جانچا پرکھا، مدلل اور قابلِ اعتماد۔",
+      "askButton": "سوال پوچھیں",
+      "browseButton": "فتاوے دیکھیں"
+    },
+    "home": {
+      "recentEyebrow": "ذخیرہ",
+      "recentTitle": "تازہ",
+      "recentEmpty": "ابھی تک کوئی فتویٰ شائع نہیں ہوا۔",
+      "importantEyebrow": "نمایاں",
+      "importantTitle": "اہم",
+      "importantEmpty": "ابھی تک کوئی اہم فتویٰ نشان زد نہیں کیا گیا۔",
+      "askSectionEyebrow": "01 \u00b7 جمع کروائیں",
+      "askSectionHeading1": "ایک",
+      "askSectionHeading2": "سوال پوچھیں",
+      "askSectionSub": "نیچے اپنا سوال درج کریں۔ اسے تصدیق شدہ علما جانچیں گے اور جواب دیں گے \u2014 آپ کو جواب ای میل کے ذریعے مل جائے گا۔",
+      "feedSectionEyebrow": "02 \u00b7 ذخیرہ",
+      "feedSectionHeading1": "تازہ",
+      "feedSectionHeading2": "فتاوے",
+      "feedSectionSub": "ہمارے علما کے سوچے سمجھے جوابات، سب کے لیے پڑھنے کو دستیاب۔",
+      "feedEmpty": "ابھی تک کوئی فتویٰ شائع نہیں ہوا۔ جلد دوبارہ آئیں۔",
+      "footerText": "دینی ساج \u00b7 تصدیق شدہ علما کے اسلامی سوالات و جوابات"
+    },
+    "fatwaList": {
+      "defaultEmpty": "ابھی یہاں کچھ نہیں ہے۔"
+    },
+    "questionCard": {
+      "viewDetails": "تفصیل دیکھیں \u2190",
+      "viewDetailsAriaLabel": "سوال کی تفصیل دیکھیں",
+      "status": {
+        "submitted": "جمع کرایا گیا",
+        "under_review": "زیرِ جائزہ",
+        "in_progress": "کارروائی جاری",
+        "answered": "جواب دیا گیا",
+        "rejected": "مسترد"
+      },
+      "translationPendingTag": "ترجمہ زیر التوا"
+    },
+    "categories": {
+      "Salah": "نماز",
+      "Zakat": "زکوٰۃ",
+      "Marriage": "نکاح",
+      "Finance": "معاشیات",
+      "Fasting": "روزہ",
+      "Halal & Haram": "حلال و حرام",
+      "Purification": "طہارت",
+      "Dua & Dhikr": "دعا و ذکر",
+      "Contemporary Issues": "عصری مسائل"
+    },
+    "questionForm": {
+      "nameLabel": "نام",
+      "nameHidden": "(پوشیدہ)",
+      "nameOptional": "(اختیاری)",
+      "emailLabel": "ای میل",
+      "phoneLabel": "فون",
+      "phoneOptional": "(اختیاری)",
+      "questionLabel": "آپ کا سوال",
+      "remainAnonymous": "گمنام رہیں",
+      "allowPublic": "جواب کی عوامی اشاعت کی اجازت دیں",
+      "submitButton": "سوال جمع کریں",
+      "submitting": "جمع ہو رہا ہے\u2026",
+      "successTitle": "سوال موصول ہو گیا",
+      "successText": "شکریہ۔ آپ کا سوال جمع کر لیا گیا ہے اور ہماری ٹیم اسے جانچے گی۔ آپ کو جواب ای میل کے ذریعے ملے گا۔",
+      "askAnother": "ایک اور سوال پوچھیں",
+      "fallbackError": "کچھ غلط ہو گیا",
+      "defaultSubmitError": "جمع کرانا ناکام ہوا۔ براہ کرم دوبارہ کوشش کریں۔"
+    },
+    "fatwaView": {
+      "backToFeed": "\u2190 فیڈ پر واپس",
+      "saveAriaLabel": "فتویٰ محفوظ کریں",
+      "removeAriaLabel": "محفوظ فہرست سے ہٹائیں",
+      "questionLabel": "سوال",
+      "answerLabel": "جواب",
+      "answerNotPublished": "جواب ابھی شائع نہیں ہوا۔",
+      "referencesLabel": "حوالہ جات",
+      "downloadPdf": "پی ڈی ایف ڈاؤن لوڈ کریں",
+      "viewCount": "{count, plural, =1 {# مرتبہ دیکھا گیا} other {# مرتبہ دیکھا گیا}}",
+      "published": "شائع ہوا",
+      "selectLanguage": "زبان منتخب کریں",
+      "translationPendingNotice": "اردو ترجمہ تیار کیا جا رہا ہے۔ فی الحال انگریزی میں موجود ہے۔",
+      "toastSignInToSave": "فتاوے محفوظ کرنے کے لیے سائن اِن کریں۔",
+      "toastRemoved": "محفوظ فہرست سے ہٹا دیا گیا۔",
+      "toastSaved": "فتویٰ محفوظ ہو گیا!",
+      "toastError": "کچھ غلط ہو گیا۔"
+    },
+    "signin": {
+      "eyebrow": "سائن اِن",
+      "heading1": "خوش آمدید",
+      "heading2": "واپسی پر۔",
+      "sub": "اپنا ای میل درج کریں اور ہم آپ کو ایک میجک لنک بھیجیں گے۔ پاس ورڈ کی ضرورت نہیں۔",
+      "emailLabel": "ای میل",
+      "sendButton": "میجک لنک بھیجیں",
+      "sending": "بھیجا جا رہا ہے\u2026",
+      "successTitle": "اپنا ان باکس چیک کریں",
+      "successText": "ہم نے {email} پر ایک میجک لنک بھیجا ہے۔ سائن اِن کرنے کے لیے اسی براؤزر میں اسے کھولیں۔",
+      "expiredLinkError": "ہم آپ کو سائن اِن نہیں کروا سکے۔ یہ لنک شاید میعاد گزر جانے کی وجہ سے کام نہیں کیا — براہ کرم نیا لنک طلب کریں۔"
+    },
+    "search": {
+      "eyebrow": "تلاش",
+      "heading1": "ایک",
+      "heading2": "فتویٰ تلاش کریں",
+      "placeholder": "سوالات اور جوابات میں تلاش کریں\u2026",
+      "ariaLabel": "فتاوے تلاش کریں",
+      "noResults": "\u201c{query}\u201d کے لیے کوئی نتیجہ نہیں",
+      "hint": "کم از کم 2 حروف درج کریں، یا فتویٰ نمبر جیسے #1 لکھیں۔",
+      "searchFailed": "تلاش ناکام ہوئی"
+    },
+    "notFound": {
+      "label": "404",
+      "heading1": "فتویٰ",
+      "heading2": "نہیں ملا",
+      "sub": "یہ فتویٰ ہٹا دیا گیا ہو سکتا ہے یا عوامی نہیں ہے۔",
+      "backToFeed": "فیڈ پر واپس جائیں"
+    },
+    "toast": {
+      "dismiss": "ہٹائیں"
+    },
+    "ulama": {
+      "eyebrow": "علماء",
+      "heading1": "ہمارے",
+      "heading2": "علماء",
+      "sub": "اس پلیٹ فارم سے وابستہ تصدیق شدہ علماء۔",
+      "empty": "ابھی تک کوئی پروفائل شائع نہیں ہوئی۔",
+      "readMore": "پروفائل دیکھیں ←",
+      "backToList": "← علماء پر واپس",
+      "detailEyebrow": "علماء کی پروفائل",
+      "educationLabel": "تعلیم",
+      "teachersLabel": "اساتذہ",
+      "bioLabel": "سوانح"
+    },
+    "articles": {
+      "eyebrow": "ذخیرہ",
+      "heading1": "تازہ",
+      "heading2": "مضامین",
+      "sub": "ہمارے تصدیق شدہ لکھاریوں کے مضامین۔",
+      "empty": "ابھی تک کوئی مضمون شائع نہیں ہوا۔",
+      "readMore": "مضمون پڑھیں ←",
+      "publishedOn": "شائع ہوا",
+      "byLabel": "از",
+      "uncategorized": "غیر زمرہ بند",
+      "translationPendingTag": "ترجمہ زیر التوا",
+      "backToList": "← مضامین پر واپس",
+      "notFoundLabel": "404",
+      "notFoundHeading1": "مضمون",
+      "notFoundHeading2": "نہیں ملا",
+      "notFoundSub": "یہ مضمون ہٹا دیا گیا ہو سکتا ہے یا عوامی نہیں ہے۔",
+      "notFoundBack": "مضامین پر واپس جائیں"
+    }
+  }
+}

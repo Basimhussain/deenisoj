@@ -48,6 +48,12 @@
   white-space: nowrap;
 }
 
+@media (max-width: 767px) {
+  .displayName {
+    display: none;
+  }
+}
+
 .avatar {
   width: 36px;
   height: 36px;
@@ -59,8 +65,10 @@
     var(--color-accent) 100%
   );
   color: #ffffff;
+  font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 600;
+  line-height: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -162,6 +170,16 @@
 .menuItemSignout:hover {
   background: rgba(239, 68, 68, 0.06);
   color: #dc2626;
+}
+
+.menuSection {
+  margin: 6px 0 2px;
+  padding: 0 14px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
 }
 
 .adminChip {

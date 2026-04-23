@@ -1,6 +1,7 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import { useToast } from './ToastContext';
 import styles from './Toaster.module.css';
 
@@ -26,27 +27,28 @@ const ICONS = {
 
 export default function Toaster() {
   const { toasts, dismiss } = useToast();
+  const t = useTranslations('public.toast');
 
   return (
     <div className={styles.container} aria-live="polite" aria-atomic="false">
       <AnimatePresence initial={false}>
-        {toasts.map((t) => (
+        {toasts.map((toast) => (
           <motion.div
-            key={t.id}
+            key={toast.id}
             layout
             initial={{ opacity: 0, y: -16, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -8, scale: 0.95 }}
             transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-            className={`${styles.toast} ${styles[t.variant]}`}
-            role={t.variant === 'error' ? 'alert' : 'status'}
+            className={`${styles.toast} ${styles[toast.variant]}`}
+            role={toast.variant === 'error' ? 'alert' : 'status'}
           >
-            <span className={styles.icon}>{ICONS[t.variant]}</span>
-            <span>{t.message}</span>
+            <span className={styles.icon}>{ICONS[toast.variant]}</span>
+            <span>{toast.message}</span>
             <button
               className={styles.dismiss}
-              onClick={() => dismiss(t.id)}
-              aria-label="Dismiss"
+              onClick={() => dismiss(toast.id)}
+              aria-label={t('dismiss')}
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M18 6 6 18M6 6l12 12" />

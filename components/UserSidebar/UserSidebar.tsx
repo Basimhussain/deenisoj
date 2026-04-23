@@ -1,42 +1,61 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { Link, usePathname } from '@/i18n/navigation';
+import { useTranslations } from 'next-intl';
 import styles from './UserSidebar.module.css';
-
-const NAV_ITEMS = [
-  {
-    href: '/dashboard',
-    label: 'My Questions',
-    description: 'Questions you have submitted',
-    exact: true,
-  },
-  {
-    href: '/dashboard/saved',
-    label: 'Saved Fatawas',
-    description: 'Bookmarked fatawas for later',
-  },
-  {
-    href: '/dashboard/profile',
-    label: 'Profile',
-    description: 'Edit your display name and phone',
-  },
-];
 
 interface Props {
   email: string | null;
   displayName: string | null;
   phone: string | null;
+  isAdmin?: boolean;
 }
 
-export default function UserSidebar({ email, displayName, phone }: Props) {
+export default function UserSidebar({ email, displayName, phone, isAdmin = false }: Props) {
   const pathname = usePathname();
+  const t = useTranslations('dashboard.nav');
+  const tCommon = useTranslations('common');
+
+  const NAV_ITEMS = [
+    {
+      href: '/dashboard' as const,
+      label: t('myQuestions'),
+      description: t('myQuestionsDesc'),
+      exact: true,
+    },
+    {
+      href: '/dashboard/saved' as const,
+      label: t('savedFatawas'),
+      description: t('savedFatawasDesc'),
+    },
+    // Admins can write articles by default, so they don't need the
+    // writer-application entry.
+    ...(!isAdmin
+      ? [
+          {
+            href: '/dashboard/writer-application' as const,
+            label: t('writerApplication'),
+            description: t('writerApplicationDesc'),
+          },
+        ]
+      : []),
+    {
+      href: '/dashboard/articles' as const,
+      label: isAdmin ? t('articlesAdmin') : t('myArticles'),
+      description: isAdmin ? t('articlesAdminDesc') : t('myArticlesDesc'),
+    },
+    {
+      href: '/dashboard/profile' as const,
+      label: t('profile'),
+      description: t('profileDesc'),
+    },
+  ];
 
   return (
-    <nav className={styles.card} aria-label="Account navigation">
+    <nav className={styles.card} aria-label={t('account')}>
       <div className={styles.header}>
-        <span className={styles.eyebrow}>Account</span>
-        <h3 className={styles.title}>Dashboard</h3>
+        <span className={styles.eyebrow}>{t('account')}</span>
+        <h3 className={styles.title}>{t('dashboardTitle')}</h3>
       </div>
       <ul className={styles.list}>
         {NAV_ITEMS.map((item) => {
@@ -63,25 +82,25 @@ export default function UserSidebar({ email, displayName, phone }: Props) {
 
       {email && (
         <div className={styles.accountSection}>
-          <span className={styles.accountEyebrow}>Account Information</span>
+          <span className={styles.accountEyebrow}>{t('accountInfo')}</span>
           <div className={styles.accountRow}>
-            <span className={styles.accountLabel}>Email</span>
+            <span className={styles.accountLabel}>{t('email')}</span>
             <span className={styles.accountValue}>{email}</span>
           </div>
           {displayName && (
             <div className={styles.accountRow}>
-              <span className={styles.accountLabel}>Name</span>
+              <span className={styles.accountLabel}>{t('name')}</span>
               <span className={styles.accountValue}>{displayName}</span>
             </div>
           )}
           {phone && (
             <div className={styles.accountRow}>
-              <span className={styles.accountLabel}>Phone</span>
+              <span className={styles.accountLabel}>{t('phone')}</span>
               <span className={styles.accountValue}>{phone}</span>
             </div>
           )}
           <form action="/auth/signout" method="post" className={styles.signoutWrap}>
-            <button type="submit" className={styles.signoutBtn}>Sign out</button>
+            <button type="submit" className={styles.signoutBtn}>{tCommon('signOut')}</button>
           </form>
         </div>
       )}

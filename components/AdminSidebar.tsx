@@ -1,32 +1,8 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { Link, usePathname } from '@/i18n/navigation';
 import styles from './AdminSidebar.module.css';
-
-const NAV_ITEMS = [
-  {
-    href: '/admin',
-    label: 'Question Queue',
-    description: 'Review and respond to submitted questions',
-    exact: true,
-  },
-  {
-    href: '/admin/published',
-    label: 'Published Fatawas',
-    description: 'Questions answered and published as fatawas',
-  },
-  {
-    href: '/admin/categories',
-    label: 'Categories',
-    description: 'Manage fatwa categories',
-  },
-  {
-    href: '/admin/footer',
-    label: 'Footer',
-    description: 'Customize footer sections and links',
-  },
-];
 
 interface Props {
   email: string | null;
@@ -35,15 +11,56 @@ interface Props {
 }
 
 export default function AdminSidebar({ email, displayName, phone }: Props) {
+  const t = useTranslations('admin.sidebar');
   const pathname = usePathname();
 
+  // usePathname from next-intl returns locale-stripped path
   if (pathname === '/admin/login') return null;
 
+  const NAV_ITEMS = [
+    {
+      href: '/admin' as const,
+      label: t('queue'),
+      description: t('queueDesc'),
+      exact: true,
+    },
+    {
+      href: '/admin/published' as const,
+      label: t('published'),
+      description: t('publishedDesc'),
+    },
+    {
+      href: '/admin/writer-applications' as const,
+      label: t('writerApplications'),
+      description: t('writerApplicationsDesc'),
+    },
+    {
+      href: '/admin/articles' as const,
+      label: t('articles'),
+      description: t('articlesDesc'),
+    },
+    {
+      href: '/admin/categories' as const,
+      label: t('categories'),
+      description: t('categoriesDesc'),
+    },
+    {
+      href: '/admin/ulama' as const,
+      label: t('ulama'),
+      description: t('ulamaDesc'),
+    },
+    {
+      href: '/admin/footer' as const,
+      label: t('footer'),
+      description: t('footerDesc'),
+    },
+  ];
+
   return (
-    <nav className={styles.card} aria-label="Admin navigation">
+    <nav className={styles.card} aria-label={t('navigation')}>
       <div className={styles.header}>
-        <span className={styles.eyebrow}>Navigation</span>
-        <h3 className={styles.title}>Admin</h3>
+        <span className={styles.eyebrow}>{t('navigation')}</span>
+        <h3 className={styles.title}>{t('title')}</h3>
         <span className={styles.accent} aria-hidden="true" />
       </div>
       <ul className={styles.list}>
@@ -71,25 +88,25 @@ export default function AdminSidebar({ email, displayName, phone }: Props) {
 
       {email && (
         <div className={styles.accountSection}>
-          <span className={styles.accountEyebrow}>Account Information</span>
+          <span className={styles.accountEyebrow}>{t('accountInfo')}</span>
           <div className={styles.accountRow}>
-            <span className={styles.accountLabel}>Email</span>
+            <span className={styles.accountLabel}>{t('email')}</span>
             <span className={styles.accountValue}>{email}</span>
           </div>
           {displayName && (
             <div className={styles.accountRow}>
-              <span className={styles.accountLabel}>Name</span>
+              <span className={styles.accountLabel}>{t('name')}</span>
               <span className={styles.accountValue}>{displayName}</span>
             </div>
           )}
           {phone && (
             <div className={styles.accountRow}>
-              <span className={styles.accountLabel}>Phone</span>
+              <span className={styles.accountLabel}>{t('phone')}</span>
               <span className={styles.accountValue}>{phone}</span>
             </div>
           )}
           <form action="/auth/signout" method="post" className={styles.signoutWrap}>
-            <button type="submit" className={styles.signoutBtn}>Sign out</button>
+            <button type="submit" className={styles.signoutBtn}>{t('signOut')}</button>
           </form>
         </div>
       )}

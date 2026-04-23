@@ -1,7 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
 import { useToast } from '@/components/Toast';
 import styles from './DeleteButton.module.css';
 
@@ -15,16 +16,20 @@ interface Props {
 
 export default function DeleteButton({
   endpoint,
-  label = 'Delete',
-  confirmMessage = 'Are you sure you want to delete this? This cannot be undone.',
+  label,
+  confirmMessage,
   onDeleted,
   redirectTo,
 }: Props) {
+  const t = useTranslations('admin.deleteButton');
   const router = useRouter();
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const resolvedLabel = label ?? t('defaultLabel');
+  const resolvedConfirmMessage = confirmMessage ?? t('defaultConfirmMessage');
 
   const close = useCallback(() => {
     if (!deleting) {
@@ -49,10 +54,10 @@ export default function DeleteButton({
       const res = await fetch(endpoint, { method: 'DELETE' });
       if (!res.ok) {
         const b = await res.json().catch(() => ({}));
-        throw new Error(b.error || 'Delete failed');
+        throw new Error(b.error || t('toastFailed'));
       }
       setOpen(false);
-      toast('Deleted successfully.', 'info');
+      toast(t('toastDeleted'), 'info');
       if (onDeleted) onDeleted();
       if (redirectTo) {
         router.push(redirectTo);
@@ -60,7 +65,7 @@ export default function DeleteButton({
         router.refresh();
       }
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Delete failed';
+      const msg = err instanceof Error ? err.message : t('toastFailed');
       setError(msg);
       toast(msg, 'error');
     } finally {
@@ -75,7 +80,7 @@ export default function DeleteButton({
         className={styles.trigger}
         onClick={() => setOpen(true)}
       >
-        {label}
+        {resolvedLabel}
       </button>
 
       {open && (
@@ -94,10 +99,10 @@ export default function DeleteButton({
               </svg>
             </div>
             <h3 id="delete-modal-title" className={styles.title}>
-              Confirm deletion
+              {t('confirmTitle')}
             </h3>
             <p id="delete-modal-desc" className={styles.message}>
-              {confirmMessage}
+              {resolvedConfirmMessage}
             </p>
             {error && (
               <p className={styles.error}>{error}</p>
@@ -109,7 +114,7 @@ export default function DeleteButton({
                 onClick={close}
                 disabled={deleting}
               >
-                Cancel
+                {t('cancel')}
               </button>
               <button
                 type="button"
@@ -117,7 +122,7 @@ export default function DeleteButton({
                 onClick={handleConfirm}
                 disabled={deleting}
               >
-                {deleting ? 'Deleting...' : 'Delete'}
+                {deleting ? t('deleting') : t('defaultLabel')}
               </button>
             </div>
           </div>

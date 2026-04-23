@@ -1,0 +1,166 @@
+{
+  "public": {
+    "header": {
+      "searchPlaceholder": "Search fatawa\u2026",
+      "searchAriaLabel": "Search fatawa",
+      "homeAriaLabel": "DeeniSOJ home",
+      "seeAllResults": "See all results for \u201c{query}\u201d \u2192",
+      "navFeed": "Feed",
+      "navArticles": "Articles",
+      "navUlama": "Scholars",
+      "primaryNav": "Primary"
+    },
+    "hero": {
+      "eyebrow": "Islamic Q&A \u00b7 est. 2026",
+      "headline1": "فَسْـَٔلُوٓا۟ أَهْلَ ٱلذِّكْرِ",
+      "headline2": "إِن كُنتُمْ لَا تَعْلَمُونَ",
+      "ayahRef": "An-Nahl — 16:43",
+      "sub": "A considered Islamic Q&A platform. Submit your question and receive a thoughtful answer from verified scholars \u2014 reviewed, sourced, and trusted.",
+      "askButton": "Ask a question",
+      "browseButton": "Browse fatawa"
+    },
+    "home": {
+      "recentEyebrow": "Library",
+      "recentTitle": "Recent",
+      "recentEmpty": "No fatawa have been published yet.",
+      "importantEyebrow": "Featured",
+      "importantTitle": "Important",
+      "importantEmpty": "No important fatawa marked yet.",
+      "askSectionEyebrow": "01 \u00b7 Submit",
+      "askSectionHeading1": "Ask a",
+      "askSectionHeading2": "question",
+      "askSectionSub": "Fill in your question below. It will be reviewed and answered by verified scholars \u2014 you\u2019ll receive the response by email.",
+      "feedSectionEyebrow": "02 \u00b7 Library",
+      "feedSectionHeading1": "Recent",
+      "feedSectionHeading2": "fatawa",
+      "feedSectionSub": "Considered answers from our scholars, available for anyone to read.",
+      "feedEmpty": "No fatawa have been published yet. Check back soon.",
+      "footerText": "DeeniSOJ \u00b7 Islamic Q&A from verified scholars"
+    },
+    "fatwaList": {
+      "defaultEmpty": "Nothing here yet."
+    },
+    "questionCard": {
+      "viewDetails": "View details \u2192",
+      "viewDetailsAriaLabel": "View details for question",
+      "status": {
+        "submitted": "Submitted",
+        "under_review": "Under Review",
+        "in_progress": "In Progress",
+        "answered": "Answered",
+        "rejected": "Rejected"
+      },
+      "translationPendingTag": "Translation pending"
+    },
+    "categories": {
+      "Salah": "Salah",
+      "Zakat": "Zakat",
+      "Marriage": "Marriage",
+      "Finance": "Finance",
+      "Fasting": "Fasting",
+      "Halal & Haram": "Halal & Haram",
+      "Purification": "Purification",
+      "Dua & Dhikr": "Dua & Dhikr",
+      "Contemporary Issues": "Contemporary Issues"
+    },
+    "questionForm": {
+      "nameLabel": "Name",
+      "nameHidden": "(hidden)",
+      "nameOptional": "(optional)",
+      "emailLabel": "Email",
+      "phoneLabel": "Phone",
+      "phoneOptional": "(optional)",
+      "questionLabel": "Your Question",
+      "remainAnonymous": "Remain anonymous",
+      "allowPublic": "Allow public posting of the answer",
+      "submitButton": "Submit Question",
+      "submitting": "Submitting\u2026",
+      "successTitle": "Question received",
+      "successText": "Thank you. Your question has been submitted and will be reviewed by our team. You will receive a response by email.",
+      "askAnother": "Ask another question",
+      "fallbackError": "Something went wrong",
+      "defaultSubmitError": "Submission failed. Please try again."
+    },
+    "fatwaView": {
+      "backToFeed": "\u2190 Back to feed",
+      "saveAriaLabel": "Save fatwa",
+      "removeAriaLabel": "Remove from saved",
+      "questionLabel": "Question",
+      "answerLabel": "Answer",
+      "answerNotPublished": "Answer not yet published.",
+      "referencesLabel": "References",
+      "downloadPdf": "Download PDF",
+      "viewCount": "{count, plural, =1 {# view} other {# views}}",
+      "published": "Published",
+      "selectLanguage": "Select language",
+      "translationPendingNotice": "Urdu translation is being prepared. Showing the English version below.",
+      "toastSignInToSave": "Sign in to save fatawa.",
+      "toastRemoved": "Removed from saved.",
+      "toastSaved": "Fatwa saved!",
+      "toastError": "Something went wrong."
+    },
+    "signin": {
+      "eyebrow": "Sign in",
+      "heading1": "Welcome",
+      "heading2": "back.",
+      "sub": "Enter your email and we\u2019ll send you a magic link. No passwords.",
+      "emailLabel": "Email",
+      "sendButton": "Send magic link",
+      "sending": "Sending\u2026",
+      "successTitle": "Check your inbox",
+      "successText": "We sent a magic link to {email}. Click it from the same browser to sign in.",
+      "expiredLinkError": "We could not sign you in. The link may have expired \u2014 please request a new one."
+    },
+    "search": {
+      "eyebrow": "Search",
+      "heading1": "Find a",
+      "heading2": "fatwa",
+      "placeholder": "Search questions and answers\u2026",
+      "ariaLabel": "Search fatwas",
+      "noResults": "No results for \u201c{query}\u201d",
+      "hint": "Type at least 2 characters, or a fatwa number like #1.",
+      "searchFailed": "Search failed"
+    },
+    "notFound": {
+      "label": "404",
+      "heading1": "Fatwa",
+      "heading2": "not found",
+      "sub": "This fatwa may have been removed or is not public.",
+      "backToFeed": "Back to feed"
+    },
+    "toast": {
+      "dismiss": "Dismiss"
+    },
+    "ulama": {
+      "eyebrow": "Scholars",
+      "heading1": "Our",
+      "heading2": "ulama",
+      "sub": "Verified ulama associated with this platform.",
+      "empty": "No ulama profiles have been published yet.",
+      "readMore": "View profile →",
+      "backToList": "← Back to ulama",
+      "detailEyebrow": "Scholar profile",
+      "educationLabel": "Education",
+      "teachersLabel": "Teachers",
+      "bioLabel": "Biography"
+    },
+    "articles": {
+      "eyebrow": "Library",
+      "heading1": "Recent",
+      "heading2": "articles",
+      "sub": "Articles from our verified writers.",
+      "empty": "No articles have been published yet.",
+      "readMore": "Read article →",
+      "publishedOn": "Published",
+      "byLabel": "By",
+      "uncategorized": "Uncategorized",
+      "translationPendingTag": "Translation pending",
+      "backToList": "← Back to articles",
+      "notFoundLabel": "404",
+      "notFoundHeading1": "Article",
+      "notFoundHeading2": "not found",
+      "notFoundSub": "This article may have been removed or is not public.",
+      "notFoundBack": "Back to articles"
+    }
+  }
+}

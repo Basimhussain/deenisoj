@@ -1,0 +1,25 @@
+{
+  "common": {
+    "siteName": "DeeniSOJ",
+    "tagline": "Islamic Q&A",
+    "loading": "Loading…",
+    "save": "Save",
+    "saved": "Saved",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "publish": "Publish",
+    "back": "Back",
+    "submit": "Submit",
+    "search": "Search",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "viewAll": "View all",
+    "translationPending": "Translation pending",
+    "en": "EN",
+    "ur": "اردو",
+    "localeSwitcherAriaLabel": "Switch language",
+    "switchToEnglish": "Switch to English",
+    "switchToUrdu": "Switch to Urdu"
+  }
+}

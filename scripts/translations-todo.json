@@ -1,0 +1,92 @@
+[
+  {
+    "id": "4af2362a-6588-433a-8a56-9c336124c781",
+    "fatwa_number": 1,
+    "category": "Salah",
+    "question_en": "Is it permissible to delay the Fajr prayer until after sunrise due to work obligations?",
+    "answer_en": "No, it is not permissible to intentionally delay the Fajr prayer past its time (sunrise). The prayer has a fixed time, and missing it deliberately is a major sin. One should adjust their work schedule or sleep routine to ensure Fajr is prayed within its time. If one oversleeps unintentionally, they must pray it as soon as they wake up as a make-up (qadha).",
+    "question_ur": "",
+    "answer_ur": ""
+  },
+  {
+    "id": "46601afe-e7f0-4c34-8535-7928e16f20e0",
+    "fatwa_number": 2,
+    "category": "Zakat",
+    "question_en": "What is the ruling on paying Zakat on gold jewellery that is regularly worn?",
+    "answer_en": "According to the Hanafi madhab, Zakat is obligatory on gold jewellery that reaches the nisab (minimum threshold of 87.48g of gold) even if it is regularly worn, once a full lunar year has passed. Other madhabs, including the Shafi'i and Hanbali, hold that jewellery worn for personal use is exempt. One should follow the ruling of their own madhab or consult a local scholar.",
+    "question_ur": "",
+    "answer_ur": ""
+  },
+  {
+    "id": "6e4242c6-a3b4-436d-b631-dbba6d97fde8",
+    "fatwa_number": 3,
+    "category": "Marriage",
+    "question_en": "Is a marriage contract valid without a wali (guardian) for the bride?",
+    "answer_en": "The majority of scholars, including the Shafi'i, Maliki, and Hanbali schools, hold that a wali is a necessary condition for a valid nikah. A marriage contracted without a wali is therefore invalid in these madhabs. The Hanafi school permits an adult woman of sound mind to contract her own marriage, though it is still considered strongly recommended to have a wali present.",
+    "question_ur": "",
+    "answer_ur": ""
+  },
+  {
+    "id": "50b089b2-58ca-4928-b751-e3e66dacfa50",
+    "fatwa_number": 4,
+    "category": "Finance",
+    "question_en": "Is it permissible to take out a mortgage to purchase a home in a non-Muslim country?",
+    "answer_en": "Conventional mortgages involve riba (interest), which is categorically prohibited in Islam. A number of contemporary scholars permit it under the principle of necessity (darurah) for Muslims living as minorities in non-Muslim countries, subject to strict conditions: there is no Islamic alternative available, renting is not a viable option, and the person is in genuine need of shelter. However, many scholars do not accept this position and urge Muslims to seek Sharia-compliant alternatives such as diminishing musharakah products offered by Islamic banks.",
+    "question_ur": "",
+    "answer_ur": ""
+  },
+  {
+    "id": "c1e90f14-2e17-43cf-b14f-601bc3c385fa",
+    "fatwa_number": 5,
+    "category": "Fasting",
+    "question_en": "Does breaking wind invalidate the fast of Ramadan?",
+    "answer_en": "No, breaking wind (passing gas) does not invalidate the fast. It does, however, break wudu (ablution), so one would need to renew their wudu before performing salah. The fast is only broken by things that enter the body cavity intentionally, such as eating, drinking, or sexual intercourse, not by things that exit the body.",
+    "question_ur": "",
+    "answer_ur": ""
+  },
+  {
+    "id": "a250da35-e2ad-420e-8ff9-d2bae2a4cdf3",
+    "fatwa_number": 6,
+    "category": "Halal & Haram",
+    "question_en": "Is it permissible to listen to music with Islamic lyrics?",
+    "answer_en": "Scholars differ on this. Many classical scholars held that all music involving instruments is prohibited. A number of contemporary scholars permit vocals-only nasheeds without instruments. Music with Islamic lyrics set to conventional instrumentation remains a contested area; the safer position is to avoid it, but one should consult a qualified scholar regarding their specific situation.",
+    "question_ur": "",
+    "answer_ur": ""
+  },
+  {
+    "id": "94289ace-1f31-43bb-9197-e8686efca841",
+    "fatwa_number": 7,
+    "category": "Salah",
+    "question_en": "Can a woman lead the Jumu'ah prayer for a congregation of women only?",
+    "answer_en": "According to the majority of classical scholars (Hanafi, Maliki, Shafi'i, Hanbali), it is permissible for a woman to lead other women in prayer, including the Jumu'ah prayer, though her standing position differs (she stands in the middle of the row rather than in front). A small minority of scholars disallow it entirely. There is no scholarly consensus permitting a woman to lead a mixed congregation of men and women.",
+    "question_ur": "",
+    "answer_ur": ""
+  },
+  {
+    "id": "11a9273b-9616-43fa-b2e1-fd42243c6dfb",
+    "fatwa_number": 8,
+    "category": "Purification",
+    "question_en": "Is it obligatory to perform ghusl after a wet dream?",
+    "answer_en": "Yes, ghusl (full ritual bath) becomes obligatory upon a person who experiences a wet dream (ihtilam) if they find evidence of ejaculation upon waking. If no fluid is found, ghusl is not required. This applies to both men and women.",
+    "question_ur": "",
+    "answer_ur": ""
+  },
+  {
+    "id": "b5f69351-f5ff-47e4-afd5-68db9801bc1f",
+    "fatwa_number": 9,
+    "category": "Dua & Dhikr",
+    "question_en": "Is it permissible to make dua in a language other than Arabic?",
+    "answer_en": "Yes, it is permissible to make dua (supplication) in any language. While Arabic is preferred and encouraged, especially the duas transmitted from the Prophet ﷺ, Allah hears and responds to supplications in all languages. One may make personal dua in their native tongue, particularly when seeking heartfelt connection with Allah.",
+    "question_ur": "",
+    "answer_ur": ""
+  },
+  {
+    "id": "5d5d125f-371e-42b9-8986-f6d124df05ba",
+    "fatwa_number": 10,
+    "category": "Contemporary Issues",
+    "question_en": "Is it permissible to use social media during the blessed days of Dhul Hijjah?",
+    "answer_en": "Using social media is not inherently prohibited, but scholars advise that the first ten days of Dhul Hijjah are among the most virtuous days of the year and should be maximised in worship, dhikr, and good deeds. Excessive or idle use of social media that distracts from worship is discouraged. One should be intentional and use these days to increase in acts of obedience.",
+    "question_ur": "",
+    "answer_ur": ""
+  }
+]

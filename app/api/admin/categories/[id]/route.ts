@@ -13,7 +13,12 @@ export async function PATCH(
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
-  let body: { name?: string; description?: string; sort_order?: number };
+  let body: {
+    name?: string;
+    name_ur?: string | null;
+    description?: string;
+    sort_order?: number;
+  };
   try {
     body = await request.json();
   } catch {
@@ -25,7 +30,7 @@ export async function PATCH(
     const name = body.name.trim();
     if (name.length < 2) {
       return NextResponse.json(
-        { error: 'Name must be at least 2 characters' },
+        { error: 'English name must be at least 2 characters' },
         { status: 400 }
       );
     }
@@ -34,6 +39,9 @@ export async function PATCH(
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-|-$/g, '');
+  }
+  if ('name_ur' in body) {
+    updates.name_ur = body.name_ur?.toString().trim() || null;
   }
   if (body.description !== undefined) {
     updates.description = body.description?.trim() || null;

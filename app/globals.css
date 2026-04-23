@@ -37,9 +37,20 @@
   --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.1), 0 8px 20px rgba(0, 0, 0, 0.05);
   --shadow-glow: 0 0 80px rgba(201, 168, 114, 0.2);
 
-  /* Typography */
-  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-serif: 'Instrument Serif', 'Times New Roman', serif;
+  /* Typography.
+   * Noto Nastaliq Urdu sits RIGHT AFTER the primary Latin font in every
+   * stack — before system-ui, -apple-system, Times New Roman, or any
+   * generic family. Those intermediate fonts all ship with their own
+   * Arabic glyphs (SF Arabic on macOS, Times New Roman's Arabic on
+   * Windows), so if Nastaliq is further down the stack the browser
+   * resolves Urdu code points against them first and never falls through
+   * to Nastaliq. Putting Nastaliq in position 2 means: Latin resolves
+   * against Inter/Instrument Serif (which cover it); Urdu code points
+   * don't exist in those, so the browser walks to position 2 and lands
+   * on Nastaliq every time. */
+  --font-sans: 'Inter', 'Noto Nastaliq Urdu', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'Instrument Serif', 'Noto Nastaliq Urdu', 'Times New Roman', serif;
+  --font-urdu: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Nafees Nastaleeq', serif;
   --font-display: clamp(48px, 9vw, 112px);
   --font-title: clamp(32px, 4.5vw, 52px);
   --font-heading: 22px;
@@ -104,7 +115,61 @@ body {
   font-feature-settings: 'ss01', 'cv11';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition: background-color var(--dur-med) ease, color var(--dur-med) ease;
+  transition:
+    background-color var(--dur-med) ease,
+    color var(--dur-med) ease,
+    opacity var(--dur-med) var(--ease-out-expo),
+    filter var(--dur-med) var(--ease-out-expo);
+}
+
+/*
+ * Locale switch fade (non-Chromium fallback). The loading skeleton is the
+ * primary feedback; this just softens the very brief window before the
+ * loader mounts and the re-enter after the new tree commits. Kept subtle
+ * so the skeleton itself stays readable.
+ */
+html[data-locale-transitioning='true'] body {
+  opacity: 0.7;
+}
+
+/*
+ * View Transitions cross-fade. Applies only where the browser supports
+ * ::view-transition pseudo-elements (Chromium, Safari).
+ */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 450ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+::view-transition-old(root) {
+  animation-name: localeFadeOut;
+}
+
+::view-transition-new(root) {
+  animation-name: localeFadeIn;
+}
+
+@keyframes localeFadeOut {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes localeFadeIn {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-locale-transitioning='true'] body {
+    opacity: 1;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 1ms;
+  }
 }
 
 ::selection {
@@ -136,10 +201,48 @@ h4 {
   line-height: 1.15;
 }
 
-[lang='ur'] {
+/*
+ * Font strategy for Urdu locale:
+ * Inter is listed FIRST so Latin glyphs (user names, "EN", emails, numbers)
+ * render in Inter. Noto Nastaliq Urdu is the fallback and automatically
+ * kicks in for Arabic/Urdu code points, which Inter has no glyphs for.
+ * This gives correct mixed-script rendering without per-element classes.
+ */
+html[lang='ur'] body {
+  font-family: var(--font-sans), var(--font-urdu);
+  line-height: 1.7;
+}
+
+html[lang='ur'] h1,
+html[lang='ur'] h2,
+html[lang='ur'] h3,
+html[lang='ur'] h4 {
+  font-family: var(--font-sans), var(--font-urdu);
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+[dir='rtl'] {
+  text-align: right;
+}
+
+/*
+ * Explicit Urdu-only blocks (fatwa body, admin textareas) force Nastaliq
+ * first. Latin chars inside still fall back to Inter.
+ */
+.urduText,
+[lang='ur'] .urduText {
+  font-family: var(--font-urdu), var(--font-sans);
   direction: rtl;
   text-align: right;
-  font-size: 1.08em;
+  line-height: 1.95;
+}
+
+.urduInput {
+  font-family: var(--font-urdu), var(--font-sans);
+  direction: rtl;
+  text-align: right;
+  line-height: 1.9;
 }
 
 :focus-visible {
@@ -199,3 +302,65 @@ h4 {
     scroll-behavior: auto !important;
   }
 }
+
+@media print {
+  @page {
+    margin: 1.5cm;
+    /* In many browsers, margin: 1.5cm hides default headers and footers sometimes,
+       or at least margins it well. Let's explicitly try to hide default browser headers */
+  }
+
+  /* Force light theme regardless of dark mode being active (used by FatwaView PDF) */
+  :root,
+  :root[data-theme='dark'],
+  html,
+  body {
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-serif), Georgia, 'Times New Roman', serif;
+  }
+
+  header, footer:not([class*="FatwaView"]) {
+    display: none !important;
+  }
+
+  /* Force background graphs/colors to print */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Kill layout wrapper animation transforms so position:fixed works */
+  .print-no-transform {
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  /* Universal Watermark injected directly on body so it escapes all React layouts */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: url("/logo-text-only.png") no-repeat center center;
+    background-size: 55%;
+    opacity: 0.06;
+    z-index: -1;
+    pointer-events: none;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+

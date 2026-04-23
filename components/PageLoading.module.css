@@ -1,0 +1,94 @@
+.wrap {
+  max-width: var(--content-narrow);
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--spacing-md) var(--spacing-2xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  animation: fadeIn 300ms var(--ease-out-expo) both;
+}
+
+.bar {
+  border-radius: var(--radius-md);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.04),
+    rgba(0, 0, 0, 0.08),
+    rgba(0, 0, 0, 0.04)
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite linear;
+}
+
+[data-theme='dark'] .bar {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04),
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.04)
+  );
+  background-size: 200% 100%;
+}
+
+.eyebrow {
+  height: 14px;
+  width: 120px;
+}
+
+.title {
+  height: 40px;
+  width: 70%;
+  margin-bottom: var(--spacing-sm);
+}
+
+.block {
+  height: 120px;
+  width: 100%;
+}
+
+.short {
+  height: 20px;
+  width: 85%;
+}
+
+.shorter {
+  height: 20px;
+  width: 65%;
+}
+
+.row {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.row .bar {
+  flex: 1;
+  height: 80px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar {
+    animation: none;
+  }
+  .wrap {
+    animation: none;
+  }
+}

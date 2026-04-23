@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import styles from './DeleteButton.module.css';
 
 interface Props {
@@ -15,13 +16,19 @@ interface Props {
 
 export default function ConfirmModal({
   open,
-  title = 'Confirm deletion',
+  title,
   message,
-  confirmLabel = 'Delete',
+  confirmLabel,
   loading = false,
   onConfirm,
   onCancel,
 }: Props) {
+  const t = useTranslations('dashboard.confirmModal');
+  const tCommon = useTranslations('common');
+
+  const resolvedTitle = title ?? t('defaultTitle');
+  const resolvedConfirmLabel = confirmLabel ?? t('defaultConfirm');
+
   const close = useCallback(() => {
     if (!loading) onCancel();
   }, [loading, onCancel]);
@@ -53,7 +60,7 @@ export default function ConfirmModal({
           </svg>
         </div>
         <h3 id="confirm-modal-title" className={styles.title}>
-          {title}
+          {resolvedTitle}
         </h3>
         <p id="confirm-modal-desc" className={styles.message}>
           {message}
@@ -65,7 +72,7 @@ export default function ConfirmModal({
             onClick={close}
             disabled={loading}
           >
-            Cancel
+            {tCommon('cancel')}
           </button>
           <button
             type="button"
@@ -73,7 +80,7 @@ export default function ConfirmModal({
             onClick={onConfirm}
             disabled={loading}
           >
-            {loading ? 'Deleting...' : confirmLabel}
+            {loading ? t('deleting') : resolvedConfirmLabel}
           </button>
         </div>
       </div>

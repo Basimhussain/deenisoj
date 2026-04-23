@@ -34,7 +34,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
-  let body: { name?: string; description?: string; sort_order?: number };
+  let body: {
+    name?: string;
+    name_ur?: string | null;
+    description?: string;
+    sort_order?: number;
+  };
   try {
     body = await request.json();
   } catch {
@@ -44,10 +49,12 @@ export async function POST(request: Request) {
   const name = body.name?.trim();
   if (!name || name.length < 2) {
     return NextResponse.json(
-      { error: 'Name must be at least 2 characters' },
+      { error: 'English name must be at least 2 characters' },
       { status: 400 }
     );
   }
+
+  const nameUr = body.name_ur?.trim() || null;
 
   const slug = name
     .toLowerCase()
@@ -61,6 +68,7 @@ export async function POST(request: Request) {
       .insert([
         {
           name,
+          name_ur: nameUr,
           slug,
           description: body.description?.trim() || null,
           sort_order: body.sort_order ?? 0,
