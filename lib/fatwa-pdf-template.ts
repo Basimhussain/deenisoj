@@ -5,6 +5,59 @@
 // header/footer templates in the API route — not here.
 // ---------------------------------------------------------------------------
 
+import fs from 'node:fs';
+import path from 'node:path';
+
+// Bundle the Arabic-range woff2 files directly into the generated HTML as
+// base64 data URIs so Chromium on @sparticuz/chromium (Vercel Lambda) never
+// has to fetch fonts over the network — which is unreliable on cold starts
+// and is what caused Urdu/Arabic glyphs to render as □ tofu boxes.
+const FONTS_DIR = path.join(process.cwd(), 'public', 'fonts');
+let fontFaceCssCache: string | null = null;
+function getFontFaceCss(): string {
+  if (fontFaceCssCache) return fontFaceCssCache;
+
+  const load = (file: string) => {
+    try {
+      const buf = fs.readFileSync(path.join(FONTS_DIR, file));
+      return `data:font/woff2;base64,${buf.toString('base64')}`;
+    } catch {
+      return '';
+    }
+  };
+
+  // Shared Arabic unicode-range used by Google Fonts for all three families.
+  // Includes Arabic, Supplement, Extended-A/B, Presentation Forms A/B, and
+  // Urdu-specific ligature codepoints (FB50-FDFF, FE70-FEFC).
+  const ARABIC_RANGE =
+    'U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC';
+
+  const amiri400 = load('amiri-400-arabic.woff2');
+  const amiri700 = load('amiri-700-arabic.woff2');
+  const naskh400 = load('noto-naskh-arabic-400-arabic.woff2');
+  const nastaliq400 = load('noto-nastaliq-urdu-400-arabic.woff2');
+
+  const face = (
+    family: string,
+    weight: number,
+    dataUri: string
+  ) =>
+    dataUri
+      ? `@font-face{font-family:'${family}';font-style:normal;font-weight:${weight};font-display:block;src:url(${dataUri}) format('woff2');unicode-range:${ARABIC_RANGE};}`
+      : '';
+
+  fontFaceCssCache = [
+    face('Amiri', 400, amiri400),
+    face('Amiri', 700, amiri700),
+    face('Noto Naskh Arabic', 400, naskh400),
+    face('Noto Naskh Arabic', 700, naskh400), // same file doubles for bold
+    face('Noto Nastaliq Urdu', 400, nastaliq400),
+    face('Noto Nastaliq Urdu', 700, nastaliq400),
+  ].join('\n');
+
+  return fontFaceCssCache;
+}
+
 export interface FatwaPdfData {
   id: string;
   number: number | string;
@@ -111,9 +164,13 @@ export function buildFatwaHtml(data: FatwaPdfData): string {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
   rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Amiri:wght@400;700&family=Amiri+Quran&display=block"
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=block"
 />
 <style>
+  /* Arabic/Urdu fonts are inlined as base64 so they never depend on the
+     Lambda being able to reach fonts.gstatic.com. */
+  ${getFontFaceCss()}
+
   * { box-sizing: border-box; }
 
   html, body {
