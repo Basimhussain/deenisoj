@@ -6,18 +6,15 @@ import styles from './page.module.css';
 
 export const dynamic = 'force-dynamic';
 
-interface LocalizedText {
-  en: string;
-  ur: string;
-}
+type LocalizedText = { en?: string; ur?: string } | string | null | undefined;
 
 interface Ulama {
   id: string;
-  name: LocalizedText | null;
-  summary: LocalizedText | null;
-  education: LocalizedText | null;
-  teachers: LocalizedText | null;
-  bio: LocalizedText | null;
+  name: LocalizedText;
+  summary: LocalizedText;
+  education: LocalizedText;
+  teachers: LocalizedText;
+  bio: LocalizedText;
 }
 
 export default async function UlamaDetailPage({
@@ -38,8 +35,9 @@ export default async function UlamaDetailPage({
   if (!data) notFound();
   const u = data as Ulama;
 
-  function localize(field: LocalizedText | null): string {
+  function localize(field: LocalizedText): string {
     if (!field) return '';
+    if (typeof field === 'string') return field;
     return field[locale] || field.en || '';
   }
 

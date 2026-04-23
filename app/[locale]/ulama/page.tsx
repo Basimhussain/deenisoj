@@ -5,10 +5,12 @@ import styles from './page.module.css';
 
 export const dynamic = 'force-dynamic';
 
+type LocalizedField = { en?: string; ur?: string } | string | null | undefined;
+
 interface UlamaRow {
   id: string;
-  name: { en: string; ur: string } | null;
-  summary: { en: string; ur: string } | null;
+  name: LocalizedField;
+  summary: LocalizedField;
 }
 
 export default async function UlamaListPage({
@@ -28,8 +30,9 @@ export default async function UlamaListPage({
 
   const rows = (data ?? []) as UlamaRow[];
 
-  function localize(field: { en: string; ur: string } | null): string {
+  function localize(field: LocalizedField): string {
     if (!field) return '';
+    if (typeof field === 'string') return field;
     return field[locale] || field.en || '';
   }
 
